@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN" data-theme="light">
 <head>
 <meta charset="UTF-8">
@@ -366,9 +366,11 @@ footer .right{margin-left:auto;display:flex;gap:14px}
 .aif-card .aif-head h3{font-size:15px;font-weight:650;margin-bottom:4px}
 .aif-card .aif-head p{font-size:13px;color:var(--text-2);line-height:1.6}
 .aif-card .aif-body{padding:14px 16px;background:var(--bg-soft)}
-.aif-card .aif-body .aif-bad{font-size:13.5px;color:var(--text-2);line-height:1.7;padding:10px 12px;background:color-mix(in srgb,#e5484d 6%,var(--bg));border-radius:var(--radius-sm);border:1px solid color-mix(in srgb,#e5484d 20%,var(--border));margin-bottom:8px}
-.aif-card .aif-body .aif-fix{font-size:13px;color:var(--text-3);line-height:1.6;padding:10px 12px;background:color-mix(in srgb,#16a34a 6%,var(--bg));border-radius:var(--radius-sm);border:1px solid color-mix(in srgb,#16a34a 20%,var(--border))}
-.aif-card .aif-body .aif-fix b{color:#16a34a}
+.aif-card .aif-body .aif-quote{font-size:17px;font-weight:600;line-height:1.6;color:var(--text);padding:16px 18px;background:var(--bg);border-radius:var(--radius-sm);border-left:3px solid var(--brand);margin-bottom:8px}
+.aif-card .aif-body .aif-fix{font-size:12.5px;color:var(--text-3);line-height:1.6;padding:8px 0 0;border-top:1px solid var(--border-light);margin-top:4px}
+.aif-card .aif-body .aif-fix b{color:var(--text-2);font-weight:600}
+.aif-card .aif-body .aif-visual{padding:16px;background:var(--bg);border-radius:var(--radius-sm);border:1px solid var(--border-light);margin-bottom:8px;min-height:60px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+@keyframes aifFadeInUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
 /* ============ Skill 页 ============ */
 .skill-hero{text-align:center;padding:30px 0 24px}
@@ -422,6 +424,7 @@ footer .right{margin-left:auto;display:flex;gap:14px}
     <a href="#" data-view="anti">防止 AI 味儿</a>
     <a href="#" data-view="skill">Skill</a>
     <a href="#" data-view="group">交流群</a>
+    <a href="software/index.html" style="background:var(--brand-light);color:var(--brand);font-weight:600">📦 软件库</a>
   </div>
   <div class="spacer"></div>
   <div class="search">
@@ -2033,12 +2036,9 @@ const PRACTICE_QUESTIONS = [
 
 const ANTI_AI_DATA = {
   tabs:[
-    {key:"speak",cn:"中文口癖",desc:"怪动词、单字动作和固定开场、结尾",count:14},
-    {key:"template",cn:"页面模板感",desc:"反复出现的布局、装饰和通用图标",count:10},
-    {key:"ux",cn:"不好用的交互",desc:"同一件事换名字，按钮看着能点却没有结果",count:8},
-    {key:"copy",cn:"文案堆砌",desc:"空话套话、堆砌形容词、不说人话",count:8},
-    {key:"visual",cn:"配色与视觉",desc:"颜色乱用、对比度不够、装饰过度",count:7},
-    {key:"code",cn:"代码与实现",desc:"AI 生成代码中常见的偷懒模式",count:6}
+    {key:"speak",cn:"中文口癖",desc:"怪动词、单字动作和固定开场、结尾",count:11},
+    {key:"template",cn:"页面模板感",desc:"反复出现的布局、装饰和通用图标",count:8},
+    {key:"ux",cn:"不好用的交互",desc:"同一件事换名字，按钮看着能点却没有结果",count:6}
   ],
   items:{
     speak:[
@@ -2052,59 +2052,25 @@ const ANTI_AI_DATA = {
       {name:"不是 X，而是 Y",desc:"直接说这次更新做了什么，别又写成不是更新而是重新定义未来。",bad:"这不是一次简单的产品更新，而是一场关于效率、协作与未来工作方式的重新定义。",fix:"直接说做了什么改动。"},
       {name:"先说结论的套话",desc:"这个问题很简单，直接告诉我答案就行，不用先铺一大段。",bad:"我先把结论放在前面：你的直觉完全正确。下面我用三点把这件事讲透。",fix:"直接给答案，不要铺垫。"},
       {name:"每句话都拆成分点",desc:"这几句话明明能顺着说完，为什么又拆成一堆圆点和编号？",bad:"结论：• 能做 • 速度快 • 风险低 1. 先改 2. 再看 3. 最后确认",fix:"能顺畅说完的就用完整句子，不要拆成列表。"},
-      {name:"如果你愿意",desc:"说完就行了，不用每次最后都问我要不要再来一版。",bad:"如果你愿意，我下一步可以直接给你一版。",fix:"等用户提需求再给，不要每次追加。"},
-      {name:"让我们一起",desc:"你帮我做个功能就行了，不用每次都说让我们一起探索。",bad:"让我们一起探索这个充满可能性的空间，共同打造属于你的独特体验。",fix:"直接说要做什么，不用号召式语言。"},
-      {name:"值得一提的是",desc:"每个功能都要值得一提，那到底哪个才真正值得提？",bad:"值得一提的是，我们还加入了智能推荐功能。更值得一提的是，它支持多端同步。",fix:"删掉铺垫词，直接说功能是什么。"},
-      {name:"总而言之长结尾",desc:"回答完了就结束，不用每次都来一段总结升华。",bad:"总而言之，通过以上分析和实践，我们可以清晰地看到，这不仅是一个功能，更是一种全新的工作方式。让我们一起拥抱变化。",fix:"回答完直接结束，不需要总结段落。"}
+      {name:"如果你愿意",desc:"说完就行了，不用每次最后都问我要不要再来一版。",bad:"如果你愿意，我下一步可以直接给你一版。",fix:"等用户提需求再给，不要每次追加。"}
     ],
     template:[
-      {name:"居中大标题",desc:"能不能先把产品界面放出来？现在又是一个大标题加两个按钮。",bad:"AI 驱动 重新定义未来 / 团队需要的一切，都在这里。",fix:"首屏放产品截图或实际界面，不要只有标题和按钮。"},
-      {name:"三张等宽卡片",desc:"这三个功能明明有主次，为什么都做成一样大的卡片？",bad:"三张等宽等高的功能卡片并排，图标 + 标题 + 一句话。",fix:"按功能重要性区分卡片大小，主要功能更大更突出。"},
-      {name:"蓝紫渐变光球",desc:"怎么又是蓝紫渐变和发光球？这跟我们的品牌没什么关系。",bad:"蓝紫渐变背景 + 中间一个发光的球 + 下一代智能平台。",fix:"用品牌色，去掉发光效果，展示真实产品。"},
-      {name:"框里再套框",desc:"外面已经有一个框了，里面怎么又套了三层卡片？",bad:"项目概览 > 本周进度卡片 > 已完成 8 项卡片 > 详情卡片。",fix:"减少嵌套层级，用留白和排版分隔内容，不要靠加框。"},
-      {name:"每段都画分割线",desc:"这些内容本来就是一组，为什么每两行之间都要画一条线？",bad:"通知设置 / — / 邮件通知 / — / 产品更新 / — / 每周摘要",fix:"同类内容用间距分隔即可，不要每行画线。"},
-      {name:"左边都要加一条竖线",desc:"这些都是普通说明，为什么每一块左边都要加一条彩色竖线？",bad:"发布说明 | 影响范围 | 同步时间 | 发布时间，每条左边都有彩色竖线。",fix:"普通说明不需要装饰性竖线，用正常排版即可。"},
-      {name:"又大又黑又挤",desc:"这个标题又粗又挤，两行字都快贴在一起了，能不能先让它好读一点？",bad:"让每一次会议都推动工作向前 / 把录音整理成结论、负责人和待办。",fix:"减小标题字号、增加行高和字间距，让文字透气。"},
-      {name:"Emoji 当图标",desc:"这些火箭、星星、盾牌看着太模板了，换成正常一点的图标吧。",bad:"🚀 极速 / ✨ 智能 / 🛡️ 安全",fix:"用统一的图标库（如 Lucide、Heroicons），不要用 emoji。"},
-      {name:"万事皆网格",desc:"什么内容都往网格里塞，列表、表单、详情全变成了卡片网格。",bad:"用户列表、设置项、订单详情全做成 3 列卡片网格。",fix:"按内容类型选布局：列表用表格，设置用表单，只有商品/作品才适合卡片网格。"},
-      {name:"统计数字三连",desc:"每个页面顶部都要放三个大数字，也不管有没有意义。",bad:"10万+ 用户 / 99.9% 可用率 / 24/7 支持——放在一个设置页顶部。",fix:"只在需要展示核心指标的页面放统计数字，设置页和详情页不需要。"}
+      {name:"居中大标题",desc:"能不能先把产品界面放出来？现在又是一个大标题加两个按钮。",bad:"AI 驱动 重新定义未来 / 团队需要的一切，都在这里。",fix:"首屏放产品截图或实际界面，不要只有标题和按钮。",visual:'<div style="text-align:center;padding:20px 10px"><div style="font-size:22px;font-weight:800;letter-spacing:-.5px;margin-bottom:6px">AI 驱动 重新定义未来</div><div style="font-size:12px;color:#888;margin-bottom:14px">团队需要的一切，都在这里</div><div style="display:flex;gap:8px;justify-content:center"><span style="padding:6px 16px;background:#5b5bd6;color:#fff;border-radius:6px;font-size:12px">立即开始</span><span style="padding:6px 16px;border:1px solid #ddd;border-radius:6px;font-size:12px">了解更多</span></div></div>'},
+      {name:"三张等宽卡片",desc:"这三个功能明明有主次，为什么都做成一样大的卡片？",bad:"三张等宽等高的功能卡片并排，图标 + 标题 + 一句话。",fix:"按功能重要性区分卡片大小，主要功能更大更突出。",visual:'<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px"><div style="border:1px solid #e5e5e5;border-radius:6px;padding:10px;text-align:center"><div style="font-size:18px;margin-bottom:4px">⚙</div><div style="font-size:11px;font-weight:600;margin-bottom:2px">自动化</div><div style="font-size:10px;color:#999">节省时间</div></div><div style="border:1px solid #e5e5e5;border-radius:6px;padding:10px;text-align:center"><div style="font-size:18px;margin-bottom:4px">📊</div><div style="font-size:11px;font-weight:600;margin-bottom:2px">数据</div><div style="font-size:10px;color:#999">实时分析</div></div><div style="border:1px solid #e5e5e5;border-radius:6px;padding:10px;text-align:center"><div style="font-size:18px;margin-bottom:4px">🔗</div><div style="font-size:11px;font-weight:600;margin-bottom:2px">协作</div><div style="font-size:10px;color:#999">团队共享</div></div></div>'},
+      {name:"蓝紫渐变光球",desc:"怎么又是蓝紫渐变和发光球？这跟我们的品牌没什么关系。",bad:"蓝紫渐变背景 + 中间一个发光的球 + 下一代智能平台。",fix:"用品牌色，去掉发光效果，展示真实产品。",visual:'<div style="background:linear-gradient(135deg,#667eea,#764ba2);border-radius:8px;padding:24px;text-align:center"><div style="width:60px;height:60px;border-radius:50%;background:radial-gradient(circle,#fff,#a78bfa);margin:0 auto 10px;box-shadow:0 0 30px rgba(255,255,255,.6)"></div><div style="color:#fff;font-size:14px;font-weight:600">下一代智能平台</div></div>'},
+      {name:"框里再套框",desc:"外面已经有一个框了，里面怎么又套了三层卡片？",bad:"项目概览 > 本周进度卡片 > 已完成 8 项卡片 > 详情卡片。",fix:"减少嵌套层级，用留白和排版分隔内容，不要靠加框。",visual:'<div style="border:1px solid #ddd;border-radius:6px;padding:10px"><div style="font-size:10px;color:#999;margin-bottom:6px">项目概览</div><div style="border:1px solid #e5e5e5;border-radius:5px;padding:8px"><div style="font-size:10px;color:#999;margin-bottom:4px">本周进度</div><div style="border:1px solid #eee;border-radius:4px;padding:6px"><div style="font-size:10px;color:#999;margin-bottom:3px">已完成 8 项</div><div style="border:1px solid #f0f0f0;border-radius:3px;padding:4px;font-size:10px;color:#aaa">详情卡片</div></div></div></div>'},
+      {name:"每段都画分割线",desc:"这些内容本来就是一组，为什么每两行之间都要画一条线？",bad:"通知设置 / — / 邮件通知 / — / 产品更新 / — / 每周摘要",fix:"同类内容用间距分隔即可，不要每行画线。",visual:'<div style="font-size:11px"><div style="padding:6px 0;border-bottom:1px solid #eee">通知设置</div><div style="padding:6px 0;border-bottom:1px solid #eee">邮件通知</div><div style="padding:6px 0;border-bottom:1px solid #eee">产品更新</div><div style="padding:6px 0;border-bottom:1px solid #eee">每周摘要</div><div style="padding:6px 0">安全提醒</div></div>'},
+      {name:"左边都要加一条竖线",desc:"这些都是普通说明，为什么每一块左边都要加一条彩色竖线？",bad:"发布说明 | 影响范围 | 同步时间 | 发布时间，每条左边都有彩色竖线。",fix:"普通说明不需要装饰性竖线，用正常排版即可。",visual:'<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:11px"><div style="border-left:3px solid #5b5bd6;padding-left:8px">发布说明</div><div style="border-left:3px solid #16a34a;padding-left:8px">影响范围</div><div style="border-left:3px solid #f59e0b;padding-left:8px">同步时间</div><div style="border-left:3px solid #e5484d;padding-left:8px">发布时间</div></div>'},
+      {name:"又大又黑又挤",desc:"这个标题又粗又挤，两行字都快贴在一起了，能不能先让它好读一点？",bad:"让每一次会议都推动工作向前 / 把录音整理成结论、负责人和待办。",fix:"减小标题字号、增加行高和字间距，让文字透气。",visual:'<div style="font-size:26px;font-weight:900;line-height:1.05;letter-spacing:-1px">让每一次会议都推动工作向前把录音整理成结论、负责人和待办</div>'},
+      {name:"Emoji 当图标",desc:"这些火箭、星星、盾牌看着太模板了，换成正常一点的图标吧。",bad:"🚀 极速 / ✨ 智能 / 🛡️ 安全",fix:"用统一的图标库（如 Lucide、Heroicons），不要用 emoji。",visual:'<div style="display:flex;gap:16px;justify-content:center;padding:8px"><div style="text-align:center"><div style="font-size:22px">🚀</div><div style="font-size:11px;margin-top:2px">极速</div></div><div style="text-align:center"><div style="font-size:22px">✨</div><div style="font-size:11px;margin-top:2px">智能</div></div><div style="text-align:center"><div style="font-size:22px">🛡️</div><div style="font-size:11px;margin-top:2px">安全</div></div></div>'}
     ],
     ux:[
-      {name:"每块都要飞进来",desc:"我只是往下看内容，为什么每一块都要晃一下才肯出现？",bad:"每个区块进入视口时都有淡入 + 上移动画。",fix:"只在关键内容（如数据更新）加动画，不要每块都飞。"},
-      {name:"手机端一路堆到底",desc:"电脑版的侧栏、表格和按钮全挤成一条长页面，手机上反而更难用了。",bad:"桌面版三栏布局 → 手机版全部堆成一条长滚动页面。",fix:"移动端重新设计布局，不是简单地把多栏堆叠。"},
-      {name:"到处补说明",desc:"这些分类名已经很清楚了，上面为什么还要再写一段在这里管理你的知识？",bad:"工作区 / 在这里管理你的知识、灵感和想法 / 最近笔记 / 查看你最近打开的笔记 / 项目 / 按照项目整理笔记",fix:"名称能说清楚的不要加说明，只在真正需要解释时加。"},
-      {name:"同一操作换着叫",desc:"这里写新建，右上角又叫添加，打开弹窗以后怎么变成创建了？",bad:"侧栏：新建笔记 / 空状态：添加页面 / 弹窗：创建文档",fix:"统一用词，同一个动作只用一个名字。"},
-      {name:"按钮只是摆设",desc:"这个筛选点了什么都不变，那为什么还要把它做得像真的一样？",bad:"筛选按钮看起来可点击，但点完后列表没有任何变化。",fix:"不可用的按钮做成禁用态（灰色），或直接去掉。"},
-      {name:"只放图标，不写名字",desc:"这一排图标我根本不知道哪个是删除，手机上也没法悬停看提示。",bad:"项目操作：✎ ⧉ ↗ ⌁ ×（只有图标没有文字标签）",fix:"图标加文字标签，至少在手机端要显示文字。"},
-      {name:"弹窗关不掉",desc:"弹窗打开了却找不到关闭按钮，按 Esc 也没用，只能刷新页面。",bad:"弹窗没有关闭按钮，点击遮罩不关闭，Esc 键无效。",fix:"弹窗必须有显眼关闭按钮，支持 Esc 关闭和点击遮罩关闭。"},
-      {name:"加载态全靠转圈",desc:"数据加载 5 秒了还在转圈，也不知道是在加载还是卡死了。",bad:"白色页面上只有一个转圈图标，没有文字说明，没有进度。",fix:"加载时间超过 1 秒就加文字说明（加载中…），超过 3 秒加进度条或骨架屏。"}
-    ],
-    copy:[
-      {name:"赋能万物的说明书",desc:"产品说明书写得像发布会演讲，赋能这个赋能那个，用户根本看不懂怎么用。",bad:"本产品致力于为中小企业赋能，通过智能化手段全面赋能团队协作与沟通。",fix:"直接说产品做什么：帮你管理团队任务和沟通。"},
-      {name:"形容词叠到三层",desc:"一个功能要加三个形容词才肯说出来，读完忘了说的是什么。",bad:"全新升级的、更加强大的、极致优雅的数据可视化体验。",fix:"去掉形容词堆砌，直接说功能名和数据可视化。"},
-      {name:"不说人话的错误提示",desc:"用户密码输错了，弹出来一串英文报错码，也不说到底哪里错了。",bad:"Error 401: Unauthorized. Token validation failed. Please contact administrator.",fix:"用中文告诉用户：密码不正确，请重新输入。需要技术细节放在展开区域。"},
-      {name:"空话当卖点",desc:"产品首页写的全是方向感、颗粒度、闭环，也不说具体能干什么。",bad:"打通信息孤岛，实现全链路闭环，赋予团队精细化管理的颗粒度。",fix:"写具体功能：自动汇总各部门周报，标记未完成项，推送到负责人。"},
-      {name:"按钮文案太抽象",desc:"按钮上写探索、开启、启航，点了不知道会发生什么。",bad:"开启你的旅程 / 探索更多可能性 / 启动新篇章",fix:"按钮写具体动作：创建项目 / 查看文档 / 添加成员。"},
-      {name:"每个功能都革命性",desc:"改了个按钮颜色就叫革命性升级，这个词已经没有信息量了。",bad:"革命性的界面设计 / 颠覆性的交互体验 / 划时代的功能更新",fix:"说具体改了什么：调整了按钮位置、增加了快捷键、优化了加载速度。"},
-      {name:"英文缩写当中文用",desc:"页面上全是 OKR、ROI、DAU、MAU，也不给全称，新用户根本看不懂。",bad:"提升 DAU 和 MAU，优化 ROI，对齐 OKR，打通 CRM 和 ERP。",fix:"第一次出现时标注全称，或者直接用中文：日活、月活、投入产出比。"},
-      {name:"免责声明比正文长",desc:"一个表单页面，上面的免责声明和隐私政策比表单本身还长。",bad:"表单上方 300 字的隐私声明 + 200 字的使用条款 + 150 字的数据说明。",fix:"关键信息一句话概括，详细条款放折叠区域或独立页面链接。"}
-    ],
-    visual:[
-      {name:"品牌色到处泼",desc:"品牌色铺满了整个页面，标题、背景、按钮、图标全是同一个蓝。",bad:"蓝色标题 + 蓝色背景 + 蓝色按钮 + 蓝色图标 + 蓝色文字链接。",fix:"品牌色用在按钮和链接等关键交互元素上，标题和正文用中性色。"},
-      {name: "浅灰底浅灰字",desc:"浅灰背景上放浅灰文字，看着费劲，在阳光下完全看不见。",bad:"#F5F5F5 背景上放 #CCCCCC 的文字，对比度只有 1.6:1。",fix:"文字与背景对比度至少 4.5:1。浅灰背景用 #333 以上的深色文字。"},
-      {name:"花里胡哨的渐变",desc:"每个区块背景都用不同方向的渐变，红橙黄绿青蓝紫全上了。",bad:"区块 A 用蓝紫渐变，区块 B 用橙红渐变，区块 C 用绿青渐变。",fix:"全站统一一种背景处理方式。渐变最多用一个品牌色到中性色的过渡。"},
-      {name:"投影到处加",desc:"每个元素都加投影，按钮、卡片、输入框、甚至文字都有阴影。",bad:"按钮有投影 + 卡片有投影 + 输入框有投影 + 标题文字也有投影。",fix:"投影只用在需要浮起的元素上（弹窗、下拉菜单、悬浮卡片），普通元素不加。"},
-      {name:"圆角不统一",desc:"按钮 4px 圆角，卡片 12px，图片 0px，输入框 20px，看着很碎。",bad:"按钮 4px / 卡片 12px / 头像 50% / 输入框 8px / 标签 16px。",fix:"全站统一 2-3 档圆角：小元素 6px，中等元素 10px，大容器 14px。"},
-      {name:"图标风格混搭",desc:"有的图标是线性、有的是面性、有的是扁平、有的还是拟物。",bad:"导航用线性图标 / 功能区用面性图标 / 设置页用扁平图标 / 用户头像用拟物风格。",fix:"全站统一一种图标风格，从同一个图标库选取。"},
-      {name:"字号档位太多",desc:"页面上有 10px、11px、12px、13px、14px、15px、16px、18px、20px、24px、28px、32px，看不出层级。",bad:"正文 13px，辅助文字 12px，标签 11px，提示 10px——只差 1px 人眼分不清。",fix:"字号最多 4 档：标题 24px、小标题 16px、正文 14px、辅助 12px。"}
-    ],
-    code:[
-      {name:"硬编码一切",desc:"API 地址、超时时间、分页大小全写死在代码里，换个环境就崩。",bad:"fetch('http://localhost:3000/api/users?limit=20&timeout=5000')",fix:"配置项抽到环境变量或配置文件：fetch(`${API_BASE}/users?limit=${PAGE_SIZE}`)"},
-      {name:"catch 里啥都不干",desc:"try-catch 的 catch 块是空的，报错了用户不知道、开发者也不知道。",bad:"try { ... } catch(e) { }",fix:"catch 里至少记录错误：catch(e) { console.error('加载失败', e); toast('加载失败，请重试'); }"},
-      {name:"注释写废话",desc:"注释写的跟代码一模一样，没有任何额外信息。",bad:"// 设置标题为 Hello\ndocument.title = 'Hello';",fix:"注释解释为什么这么做，不是做了什么。不需要注释的代码不写。"},
-      {name: "一个函数三百行",desc:"一个函数从参数校验到业务逻辑到数据格式化全包了，改一行就怕影响其他。",bad:"function handleSubmit() { // 300 行混合校验、请求、渲染、跳转 }",fix:"按职责拆分：validateForm() / submitData() / renderResult() / navigateTo()，每个函数只做一件事。"},
-      {name:"var 到处都是",desc:"还在用 var 声明变量，作用域混乱，提升行为导致 bug 难排查。",bad:"var list = []; for(var i=0; i<10; i++) { list.push(i); }",fix:"用 const 和 let：const list = []; for(let i=0; i<10; i++) { list.push(i); }"},
-      {name:"魔法数字遍地",desc:"代码里到处是 86400、3600、7 这种数字，不看上下文根本不知道什么意思。",bad:"if (Date.now() - time > 86400000) { ... }",fix:"命名常量：const ONE_DAY_MS = 86400000; if (Date.now() - time > ONE_DAY_MS) { ... }"}
+      {name:"每块都要飞进来",desc:"我只是往下看内容，为什么每一块都要晃一下才肯出现？",bad:"每个区块进入视口时都有淡入 + 上移动画。",fix:"只在关键内容（如数据更新）加动画，不要每块都飞。",visual:'<div style="display:flex;flex-direction:column;gap:6px"><div style="padding:8px 10px;background:#f5f5f5;border-radius:4px;font-size:11px;animation:aifFadeInUp 1.2s ease infinite">区块一（淡入上移）</div><div style="padding:8px 10px;background:#f5f5f5;border-radius:4px;font-size:11px;animation:aifFadeInUp 1.2s ease .3s infinite">区块二（淡入上移）</div><div style="padding:8px 10px;background:#f5f5f5;border-radius:4px;font-size:11px;animation:aifFadeInUp 1.2s ease .6s infinite">区块三（淡入上移）</div></div>'},
+      {name:"手机端一路堆到底",desc:"电脑版的侧栏、表格和按钮全挤成一条长页面，手机上反而更难用了。",bad:"桌面版三栏布局 → 手机版全部堆成一条长滚动页面。",fix:"移动端重新设计布局，不是简单地把多栏堆叠。",visual:'<div style="max-width:120px;margin:0 auto;border:1px solid #ddd;border-radius:6px;overflow:hidden"><div style="padding:4px 6px;background:#f5f5f5;font-size:9px;border-bottom:1px solid #eee">侧栏</div><div style="padding:4px 6px;font-size:9px;border-bottom:1px solid #eee">表格</div><div style="padding:4px 6px;font-size:9px;border-bottom:1px solid #eee">按钮</div><div style="padding:4px 6px;font-size:9px;border-bottom:1px solid #eee">列表</div><div style="padding:4px 6px;font-size:9px;border-bottom:1px solid #eee">筛选</div><div style="padding:4px 6px;font-size:9px">详情</div></div>'},
+      {name:"到处补说明",desc:"这些分类名已经很清楚了，上面为什么还要再写一段在这里管理你的知识？",bad:"工作区 / 在这里管理你的知识、灵感和想法 / 最近笔记 / 查看你最近打开的笔记 / 项目 / 按照项目整理笔记",fix:"名称能说清楚的不要加说明，只在真正需要解释时加。",visual:'<div style="font-size:11px"><div style="font-weight:600;margin-bottom:1px">工作区</div><div style="font-size:10px;color:#999;margin-bottom:6px">在这里管理你的知识、灵感和想法</div><div style="font-weight:600;margin-bottom:1px">最近笔记</div><div style="font-size:10px;color:#999;margin-bottom:6px">查看你最近打开的笔记</div><div style="font-weight:600;margin-bottom:1px">项目</div><div style="font-size:10px;color:#999">按照项目整理笔记</div></div>'},
+      {name:"同一操作换着叫",desc:"这里写新建，右上角又叫添加，打开弹窗以后怎么变成创建了？",bad:"侧栏：新建笔记 / 空状态：添加页面 / 弹窗：创建文档",fix:"统一用词，同一个动作只用一个名字。",visual:'<div style="display:flex;gap:8px;align-items:center;font-size:11px;flex-wrap:wrap;justify-content:center"><div style="padding:4px 8px;background:#f5f5f5;border-radius:4px">侧栏：新建笔记</div><div style="padding:4px 8px;background:#f5f5f5;border-radius:4px">空状态：添加页面</div><div style="padding:4px 8px;background:#f5f5f5;border-radius:4px">弹窗：创建文档</div></div>'},
+      {name:"按钮只是摆设",desc:"这个筛选点了什么都不变，那为什么还要把它做得像真的一样？",bad:"筛选按钮看起来可点击，但点完后列表没有任何变化。",fix:"不可用的按钮做成禁用态（灰色），或直接去掉。",visual:'<div style="display:flex;gap:8px;align-items:center;font-size:11px;justify-content:center"><span style="padding:5px 12px;background:#5b5bd6;color:#fff;border-radius:5px;cursor:pointer">筛选</span><span style="color:#ccc;font-size:10px">← 点击后列表无变化</span></div>'},
+      {name:"只放图标，不写名字",desc:"这一排图标我根本不知道哪个是删除，手机上也没法悬停看提示。",bad:"项目操作：✎ ⧉ ↗ ⌁ ×（只有图标没有文字标签）",fix:"图标加文字标签，至少在手机端要显示文字。",visual:'<div style="display:flex;gap:12px;justify-content:center;padding:8px"><span style="font-size:16px;cursor:pointer">✎</span><span style="font-size:16px;cursor:pointer">⧉</span><span style="font-size:16px;cursor:pointer">↗</span><span style="font-size:16px;cursor:pointer">⌁</span><span style="font-size:16px;cursor:pointer">×</span></div>'}
     ]
   }
 };
@@ -2139,7 +2105,7 @@ function renderPanels(){
 
   /* ---- 防止 AI 味儿页 ---- */
   let aHtml = `<h2>防止 AI 味儿</h2>
-    <p class="lead">看懂 AI slop 并学会修改。把常见的 AI 口癖、套模板的页面、不好用的交互、空话文案、配色问题和代码偷懒当成词条来认。每条都给出原句或原页面、正常用法和具体改法。</p>
+    <p class="lead">把常见的 AI 口癖、套模板的页面和不好用的交互当成词条来认。每条都给出原句或原页面、正常用法和具体改法。</p>
     <p style="font-size:12.5px;color:var(--text-3);margin-bottom:18px;padding:10px 14px;background:var(--bg-soft);border-radius:var(--radius-sm);border:1px solid var(--border-light)">单个词、视觉元素或交互问题不能证明作者。判断时要看它是否与其他默认选择成组出现。</p>
     <div class="aif-tabs" id="aifTabs">
       ${ANTI_AI_DATA.tabs.map((t,i)=>`<div class="aif-tab${i===0?" active":""}" data-cat="${t.key}">${t.cn} <span style="font-size:11px;color:var(--text-3)">${t.count}</span></div>`).join("")}
@@ -2151,10 +2117,13 @@ function renderPanels(){
     const items = ANTI_AI_DATA.items[cat]||[];
     let h = `<div class="aif-cat-title">${tabInfo.cn} · ${tabInfo.desc}</div><div class="aif-grid">`;
     items.forEach(item=>{
+      const bodyContent = item.visual
+        ? `<div class="aif-visual">${item.visual}</div>`
+        : `<div class="aif-quote">${item.bad}</div>`;
       h += `<div class="aif-card">
         <div class="aif-head"><h3>${item.name}</h3><p>${item.desc}</p></div>
         <div class="aif-body">
-          <div class="aif-bad"><span style="display:inline-flex;width:16px;height:16px;border-radius:50%;background:#e5484d;color:#fff;font-size:10px;align-items:center;justify-content:center;font-weight:700;margin-right:6px;flex-shrink:0">×</span>${item.bad}</div>
+          ${bodyContent}
           <div class="aif-fix"><b>改法：</b>${item.fix}</div>
         </div>
       </div>`;
@@ -2179,7 +2148,7 @@ function renderPanels(){
       <div class="skill-stats">
         <div class="st"><div class="n">278</div><div class="l">个可视化术语</div></div>
         <div class="st"><div class="n">4</div><div class="l">个核心功能</div></div>
-        <div class="st"><div class="n">53</div><div class="l">条防 AI 味参考</div></div>
+        <div class="st"><div class="n">25</div><div class="l">条防 AI 味参考</div></div>
       </div>
     </div>
 
