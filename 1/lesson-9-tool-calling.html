@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第 9 课 · Tool Calling</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; padding: 2rem; }
+  .container { max-width: 750px; margin: 0 auto; }
+  .breadcrumb { color: #64748b; font-size: 0.85rem; margin-bottom: 1.5rem; }
+  .breadcrumb a { color: #60a5fa; text-decoration: none; }
+  h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+  .subtitle { color: #94a3b8; margin-bottom: 2rem; }
+  .card { background: #1e293b; border: 1px solid #334155; border-radius: 16px; padding: 1.75rem; margin-bottom: 1.5rem; }
+  .card h2 { font-size: 1.25rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+  .card p { color: #cbd5e1; line-height: 1.85; margin-bottom: 0.75rem; font-size: 1rem; }
+  .highlight { background: linear-gradient(135deg, #7c3aed20, #2563eb20); border-left: 3px solid #818cf8; padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; margin: 1rem 0; }
+  pre { background: #0f172a; border: 1px solid #334155; border-radius: 10px; padding: 1.25rem; overflow-x: auto; margin: 1rem 0; font-size: 0.85rem; line-height: 1.8; font-family: 'Consolas', monospace; }
+  pre .kw { color: #c084fc; }
+  pre .str { color: #4ade80; }
+  pre .cmt { color: #64748b; }
+  pre .fn { color: #60a5fa; }
+  .flow { display: flex; align-items: center; gap: 0.75rem; padding: 1.25rem; background: #0f172a; border-radius: 12px; margin: 1rem 0; flex-wrap: wrap; justify-content: center; font-size: 0.85rem; }
+  .flow-node { padding: 0.75rem 1rem; border-radius: 10px; text-align: center; border: 2px solid; }
+  .fn-ai { border-color: #a78bfa; background: #a78bfa10; }
+  .fn-tool { border-color: #fbbf24; background: #fbbf2410; }
+  .fn-result { border-color: #4ade80; background: #4ade8010; }
+  .next-link { display: block; text-align: center; margin-top: 2rem; padding: 1rem; background: linear-gradient(135deg, #3b82f6, #8b5cf6); color: #fff; text-decoration: none; border-radius: 12px; font-size: 1.1rem; font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="container">
+<div class="breadcrumb">🏠 <a href="index.html">课程首页</a> → 第 9 课</div>
+<h1>🛠️ 第 9 课 · Tool Calling</h1>
+<p class="subtitle">让 AI 自己决定"什么时候该用什么工具"——这是 Agent 的核心能力</p>
+
+<div class="card">
+  <h2>🤔 问题：AI 本身能做什么？</h2>
+  <p>AI 模型本身<strong>只能生成文字</strong>。它不能搜索网页、不能读文件、不能发邮件、不能执行代码。</p>
+  <p>那 Cline 是怎么做到的？</p>
+  <div class="highlight"><strong>答案：Cline 给了 AI 一套"工具清单"，AI 自己决定什么时候调用哪个工具。</strong>AI 说"我要读这个文件"→ Cline 替它读 → 把内容塞回给 AI → AI 继续思考。这就叫 Tool Calling。</div>
+</div>
+
+<div class="card">
+  <h2>🔄 这个循环长什么样</h2>
+  <div class="flow">
+    <div class="flow-node fn-ai">🧠 AI 思考<br>"我需要查天气"</div>
+    <span>→</span>
+    <div class="flow-node fn-tool">🔧 调用工具<br>get_weather("北京")</div>
+    <span>→</span>
+    <div class="flow-node fn-result">📊 得到结果<br>"25°C，晴"</div>
+    <span>→</span>
+    <div class="flow-node fn-ai">🧠 AI 继续<br>"北京今天25度..."</div>
+  </div>
+  <p style="font-size:0.85rem;color:#94a3b8;text-align:center;">AI 不执行工具——它只"说"要调用什么。真正执行的是你的代码。</p>
+</div>
+
+<div class="card">
+  <h2>💻 实战代码：让 AI 会算数</h2>
+  <p>AI 不擅长精确计算。但你给它一个计算器工具，它就完美了：</p>
+  <pre>
+<span class="kw">from</span> openai <span class="kw">import</span> OpenAI
+<span class="kw">import</span> json
+
+client = <span class="fn">OpenAI</span>(
+    api_key=<span class="str">"sk-xxx"</span>,
+    base_url=<span class="str">"https://api.deepseek.com"</span>
+)
+
+<span class="cmt"># 定义工具：一个计算器</span>
+tools = [{
+    <span class="str">"type"</span>: <span class="str">"function"</span>,
+    <span class="str">"function"</span>: {
+        <span class="str">"name"</span>: <span class="str">"calculator"</span>,
+        <span class="str">"description"</span>: <span class="str">"计算数学表达式，如 '3*4+2'"</span>,
+        <span class="str">"parameters"</span>: {
+            <span class="str">"type"</span>: <span class="str">"object"</span>,
+            <span class="str">"properties"</span>: {
+                <span class="str">"expression"</span>: {<span class="str">"type"</span>: <span class="str">"string"</span>,
+                    <span class="str">"description"</span>: <span class="str">"要计算的表达式"</span>}
+            },
+            <span class="str">"required"</span>: [<span class="str">"expression"</span>]
+        }
+    }
+}]
+
+<span class="cmt"># 问一个数学问题</span>
+response = client.chat.completions.<span class="fn">create</span>(
+    model=<span class="str">"deepseek-chat"</span>,
+    messages=[{<span class="str">"role"</span>: <span class="str">"user"</span>,
+        <span class="str">"content"</span>: <span class="str">"123 * 456 + 789 等于多少？"</span>}],
+    tools=tools
+)
+
+<span class="cmt"># AI 返回的不是文字，而是"我要用计算器"</span>
+msg = response.choices[<span class="kw">0</span>].message
+<span class="kw">if</span> msg.tool_calls:
+    tool_call = msg.tool_calls[<span class="kw">0</span>]
+    <span class="kw">print</span>(<span class="str">f"AI 想调用: {tool_call.function.name}"</span>)
+    args = json.loads(tool_call.function.arguments)
+    <span class="kw">print</span>(<span class="str">f"参数: {args}"</span>)
+
+    <span class="cmt"># 你执行计算</span>
+    result = <span class="kw">eval</span>(args[<span class="str">"expression"</span>])
+    <span class="kw">print</span>(<span class="str">f"计算结果: {result}"</span>)
+
+    <span class="cmt"># 把结果塞回给 AI</span>
+    response2 = client.chat.completions.<span class="fn">create</span>(
+        model=<span class="str">"deepseek-chat"</span>,
+        messages=[
+            {<span class="str">"role"</span>: <span class="str">"user"</span>, <span class="str">"content"</span>: <span class="str">"123 * 456 + 789 等于多少？"</span>},
+            {<span class="str">"role"</span>: <span class="str">"assistant"</span>, <span class="str">"tool_calls"</span>: [tool_call]},
+            {<span class="str">"role"</span>: <span class="str">"tool"</span>, <span class="str">"content"</span>: <span class="kw">str</span>(result)}
+        ]
+    )
+    <span class="kw">print</span>(<span class="str">f"AI最终回复: {response2.choices[</span><span class="kw">0</span><span class="str">].message.content}"</span>)
+</pre>
+</div>
+
+<div class="card">
+  <h2>🎯 Tool Calling 跟 Agent 的关系</h2>
+  <p>Agent 的本质就是一个<strong>带 Tool Calling 的自动循环</strong>：</p>
+  <div class="flow">
+    <div class="flow-node fn-ai">AI 思考</div><span>→</span>
+    <div class="flow-node fn-tool">调用工具</div><span>→</span>
+    <div class="flow-node fn-result">得到结果</div><span>→</span>
+    <div class="flow-node fn-ai">再思考</div><span>→</span>
+    <span>...直到任务完成</span>
+  </div>
+  <p>下节课你就会自己写出这个循环。</p>
+</div>
+
+<div class="card"><h2>📋 这一课你带走的 3 个概念</h2>
+<p>1️⃣ <strong>Tool Calling</strong> = AI"说"要调什么工具，你的代码执行，结果喂回给 AI</p>
+<p>2️⃣ <strong>工具定义</strong> = 描述 + 参数 schema，AI 看懂了就知道什么时候该用什么</p>
+<p>3️⃣ <strong>Agent 的基础</strong> = Tool Calling + 循环 = AI 自己干活</p></div>
+
+<a href="lesson-10-agent-loop.html" class="next-link">👉 下一课：Agent 循环 · AI 自己干活的核心秘密</a>
+</div>
+</body>
+</html>

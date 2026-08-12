@@ -1,2 +1,39 @@
-# aiagent-learning
-AI Agent 实战指南 - Vibe Coding 术语图鉴 | 部署于 Cloudflare Pages
+# AI Agent 实战指南
+
+> 不是科普，是实战手册。每篇读完后你应该能回答末尾的"自检清单"。
+
+## 谁适合看
+
+- 有编程基础（Python 能写），但不知道怎么用 Agent 干活
+- 用过 Claude Code / Trae / ZCode，但说不清它怎么工作的
+- 想知道什么时候用 Agent、什么时候不用的判断框架
+
+## 怎么用
+
+- 按模块顺序读，每篇 15-30 分钟
+- `demos/` 目录有可运行的 Python 脚本，动手跑
+- 读完一篇后过一遍自检清单，答不上来就重读
+
+## 模块地图
+
+```
+01-ecosystem/    生态全景 → 先有地图再走路
+02-tools/        Tool 体系 → Agent 怎么"动手"
+03-workflow/     工作流实战 → 你动手干
+04-pitfalls/     避坑与安全 → 不出事
+05-comparison/   对比评测 → 选对工具
+demos/           可运行代码
+```
+
+## 你的工具环境
+
+本篇所有案例基于你实际使用的工具：
+- **Claude Code** — CLI 驱动，最灵活，也是本篇重点
+- **Trae** — 字节跳动的 IDE Agent
+- **ZCode** — 另一个 IDE Agent
+
+每个概念都会标注在三个工具里怎么体现。
+
+---
+
+> 最后更新：2026-07-03

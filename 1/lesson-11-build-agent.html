@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第 11 课 · 造一个 Agent</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; padding: 2rem; }
+  .container { max-width: 750px; margin: 0 auto; }
+  .breadcrumb { color: #64748b; font-size: 0.85rem; margin-bottom: 1.5rem; }
+  .breadcrumb a { color: #60a5fa; text-decoration: none; }
+  h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+  .subtitle { color: #94a3b8; margin-bottom: 2rem; }
+  .card { background: #1e293b; border: 1px solid #334155; border-radius: 16px; padding: 1.75rem; margin-bottom: 1.5rem; }
+  .card h2 { font-size: 1.25rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+  .card p { color: #cbd5e1; line-height: 1.85; margin-bottom: 0.75rem; font-size: 1rem; }
+  .highlight { background: linear-gradient(135deg, #7c3aed20, #2563eb20); border-left: 3px solid #818cf8; padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; margin: 1rem 0; }
+  pre { background: #0f172a; border: 1px solid #334155; border-radius: 10px; padding: 1.25rem; overflow-x: auto; margin: 1rem 0; font-size: 0.82rem; line-height: 1.8; font-family: 'Consolas', monospace; }
+  pre .kw { color: #c084fc; }
+  pre .str { color: #4ade80; }
+  pre .cmt { color: #64748b; }
+  pre .fn { color: #60a5fa; }
+  pre .num { color: #fbbf24; }
+  .checklist { list-style: none; padding: 0; }
+  .checklist li { padding: 0.35rem 0; color: #cbd5e1; }
+  .checklist li::before { content: '✅ '; }
+  .next-link { display: block; text-align: center; margin-top: 2rem; padding: 1rem; background: linear-gradient(135deg, #22c55e, #3b82f6); color: #fff; text-decoration: none; border-radius: 12px; font-size: 1.1rem; font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="container">
+<div class="breadcrumb">🏠 <a href="index.html">课程首页</a> → 第 11 课</div>
+<h1>🚀 第 11 课 · 造一个 Agent</h1>
+<p class="subtitle">把你学到的所有东西串起来——写一个能自动整理文件的 AI Agent</p>
+
+<div class="card">
+  <h2>🎯 我们要造什么</h2>
+  <p>一个 <strong>文件整理 Agent</strong>。给它一个文件夹路径，它会：</p>
+  <ul style="color:#cbd5e1;line-height:2;padding-left:1.25rem;">
+    <li>扫描文件夹里的所有文件</li>
+    <li>按文件类型分类（图片、文档、代码、视频...）</li>
+    <li>创建子文件夹并移动文件</li>
+    <li>每一轮都自己决定下一步做什么</li>
+  </ul>
+  <div class="highlight"><strong>核心理念：</strong>AI 不是写死的程序，它会自己"看"文件夹内容，自己"想"怎么分类，然后动手。你只给目标，不给步骤。</div>
+</div>
+
+<div class="card">
+  <h2>📦 Agent 的工具清单</h2>
+  <p>给 Agent 三把"刀"：</p>
+  <table style="width:100%;border-collapse:collapse;font-size:0.85rem;margin:1rem 0;">
+    <tr style="border-bottom:1px solid #334155;"><td style="padding:0.5rem;color:#fbbf24;white-space:nowrap;">🔍 list_files</td><td style="padding:0.5rem;color:#cbd5e1;">列出文件夹里有什么文件</td></tr>
+    <tr style="border-bottom:1px solid #334155;"><td style="padding:0.5rem;color:#fbbf24;white-space:nowrap;">📁 create_folder</td><td style="padding:0.5rem;color:#cbd5e1;">创建一个子文件夹</td></tr>
+    <tr><td style="padding:0.5rem;color:#fbbf24;white-space:nowrap;">📦 move_file</td><td style="padding:0.5rem;color:#cbd5e1;">把文件移动到指定文件夹</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <h2>💻 完整代码</h2>
+  <p>创建 <code>F:\aiagent学习\agent-file-organizer.py</code>：</p>
+  <pre>
+<span class="kw">import</span> os, json
+<span class="kw">from</span> openai <span class="kw">import</span> OpenAI
+
+client = <span class="fn">OpenAI</span>(api_key=<span class="str">"sk-52c14..."</span>, base_url=<span class="str">"https://api.deepseek.com"</span>)
+
+<span class="cmt"># ============ 工具定义 ============</span>
+TOOLS = [{
+    <span class="str">"type"</span>: <span class="str">"function"</span>,
+    <span class="str">"function"</span>: {
+        <span class="str">"name"</span>: <span class="str">"list_files"</span>,
+        <span class="str">"description"</span>: <span class="str">"列出指定文件夹中的所有文件（递归）"</span>,
+        <span class="str">"parameters"</span>: {
+            <span class="str">"type"</span>: <span class="str">"object"</span>,
+            <span class="str">"properties"</span>: {<span class="str">"path"</span>: {<span class="str">"type"</span>: <span class="str">"string"</span>}},
+            <span class="str">"required"</span>: [<span class="str">"path"</span>]
+        }
+    }
+}, {
+    <span class="str">"type"</span>: <span class="str">"function"</span>,
+    <span class="str">"function"</span>: {
+        <span class="str">"name"</span>: <span class="str">"create_folder"</span>,
+        <span class="str">"description"</span>: <span class="str">"创建一个文件夹（如果不存在）"</span>,
+        <span class="str">"parameters"</span>: {
+            <span class="str">"type"</span>: <span class="str">"object"</span>,
+            <span class="str">"properties"</span>: {<span class="str">"path"</span>: {<span class="str">"type"</span>: <span class="str">"string"</span>}},
+            <span class="str">"required"</span>: [<span class="str">"path"</span>]
+        }
+    }
+}, {
+    <span class="str">"type"</span>: <span class="str">"function"</span>,
+    <span class="str">"function"</span>: {
+        <span class="str">"name"</span>: <span class="str">"move_file"</span>,
+        <span class="str">"description"</span>: <span class="str">"移动文件到目标文件夹"</span>,
+        <span class="str">"parameters"</span>: {
+            <span class="str">"type"</span>: <span class="str">"object"</span>,
+            <span class="str">"properties"</span>: {
+                <span class="str">"source"</span>: {<span class="str">"type"</span>: <span class="str">"string"</span>},
+                <span class="str">"destination"</span>: {<span class="str">"type"</span>: <span class="str">"string"</span>}
+            },
+            <span class="str">"required"</span>: [<span class="str">"source"</span>, <span class="str">"destination"</span>]
+        }
+    }
+}]
+
+SYSTEM_PROMPT = <span class="str">"""你是一个文件整理助手。规则：
+1. 先 list_files 看看有什么文件
+2. 按类型分类：图片(.jpg/.png/.gif)放"图片"文件夹，文档(.pdf/.doc/.txt)放"文档"，代码(.py/.js/.html)放"代码"，视频(.mp4)放"视频"，其他放"其他"
+3. create_folder 创建分类文件夹，move_file 移动文件
+4. 每移动一个文件后汇报进度
+5. 全部完成后说"✅ 整理完成"并总结"""</span>
+
+<span class="kw">def</span> <span class="fn">execute_tool</span>(tool_call):
+    <span class="str">"""执行 AI 请求的工具"""</span>
+    name = tool_call.function.name
+    args = json.loads(tool_call.function.arguments)
+
+    <span class="kw">if</span> name == <span class="str">"list_files"</span>:
+        files = []
+        <span class="kw">for</span> root, dirs, filenames <span class="kw">in</span> os.walk(args[<span class="str">"path"</span>]):
+            <span class="kw">for</span> f <span class="kw">in</span> filenames:
+                files.<span class="fn">append</span>(os.path.join(root, f))
+        <span class="kw">return</span> <span class="str">"\n"</span>.join(files) <span class="kw">if</span> files <span class="kw">else</span> <span class="str">"(空文件夹)"</span>
+
+    <span class="kw">elif</span> name == <span class="str">"create_folder"</span>:
+        os.makedirs(args[<span class="str">"path"</span>], exist_ok=<span class="kw">True</span>)
+        <span class="kw">return</span> <span class="str">f"已创建: {args['path']}"</span>
+
+    <span class="kw">elif</span> name == <span class="str">"move_file"</span>:
+        <span class="kw">import</span> shutil
+        os.makedirs(os.path.dirname(args[<span class="str">"destination"</span>]), exist_ok=<span class="kw">True</span>)
+        shutil.move(args[<span class="str">"source"</span>], args[<span class="str">"destination"</span>])
+        <span class="kw">return</span> <span class="str">f"已移动: {os.path.basename(args['source'])} → {args['destination']}"</span>
+
+<span class="kw">def</span> <span class="fn">agent</span>(task, max_steps=<span class="num">15</span>):
+    <span class="str">"""核心 Agent 循环"""</span>
+    messages = [
+        {<span class="str">"role"</span>: <span class="str">"system"</span>, <span class="str">"content"</span>: SYSTEM_PROMPT},
+        {<span class="str">"role"</span>: <span class="str">"user"</span>, <span class="str">"content"</span>: task}
+    ]
+
+    <span class="kw">for</span> step <span class="kw">in</span> <span class="fn">range</span>(<span class="num">1</span>, max_steps + <span class="num">1</span>):
+        <span class="kw">print</span>(<span class="str">f"\n{'='*40}\n📍 Step {step}/{max_steps}\n"</span>)
+
+        response = client.chat.completions.<span class="fn">create</span>(
+            model=<span class="str">"deepseek-chat"</span>,
+            messages=messages,
+            tools=TOOLS
+        )
+        msg = response.choices[<span class="num">0</span>].message
+
+        <span class="cmt"># AI 没有请求工具 → 任务完成</span>
+        <span class="kw">if</span> <span class="kw">not</span> msg.tool_calls:
+            <span class="kw">print</span>(<span class="str">f"🤖 {msg.content}"</span>)
+            <span class="kw">return</span> msg.content
+
+        <span class="cmt"># 执行工具</span>
+        <span class="kw">for</span> tc <span class="kw">in</span> msg.tool_calls:
+            <span class="kw">print</span>(<span class="str">f"🔧 {tc.function.name}: {tc.function.arguments}"</span>)
+            result = <span class="fn">execute_tool</span>(tc)
+            <span class="kw">print</span>(<span class="str">f"   → {result[:</span><span class="num">100</span><span class="str">]}"</span>)
+
+            messages.<span class="fn">append</span>({<span class="str">"role"</span>: <span class="str">"assistant"</span>, <span class="str">"tool_calls"</span>: [tc]})
+            messages.<span class="fn">append</span>({<span class="str">"role"</span>: <span class="str">"tool"</span>, <span class="str">"content"</span>: result})
+
+            <span class="kw">print</span>(<span class="str">f"   💰 {response.usage.total_tokens} tokens this round"</span>)
+
+    <span class="kw">print</span>(<span class="str">"⚠️ 达到最大步数"</span>)
+
+<span class="cmt"># ============ 运行 ============</span>
+<span class="kw">if</span> __name__ == <span class="str">"__main__"</span>:
+    target = <span class="fn">input</span>(<span class="str">"📂 要整理哪个文件夹？> "</span>).strip()
+    <span class="kw">if</span> os.path.isdir(target):
+        <span class="fn">agent</span>(<span class="str">f"请整理文件夹: {target}"</span>)
+    <span class="kw">else</span>:
+        <span class="kw">print</span>(<span class="str">"❌ 文件夹不存在"</span>)
+</pre>
+</div>
+
+<div class="card">
+  <h2>🖐️ 跑起来</h2>
+  <p>1. 创建 <code>F:\aiagent学习\test-folder\</code>，随便扔几个不同类型的文件进去</p>
+  <p>2. <code>python agent-file-organizer.py</code></p>
+  <p>3. 输入 <code>F:\aiagent学习\test-folder</code></p>
+  <p>4. 看 Agent 自己扫描、分类、移动文件</p>
+  <div class="highlight"><strong>✅ 检验标准：</strong>Agent 自动把 test-folder 里的文件按类型分到不同子文件夹。过程中每一步都打印出来，你能看到它"思考→行动→观察→再思考"的完整过程。</div>
+</div>
+
+<div class="card">
+  <h2>🧩 这个 Agent 的局限（故意留的）</h2>
+  <p>这是教学版，有几个故意没解决的问题，你以后可以自己改进：</p>
+  <p>1️⃣ 没有安全检查——移动文件前不确认</p>
+  <p>2️⃣ Token 会膨胀——没有实现上下文压缩</p>
+  <p>3️⃣ 分类规则太死——可以根据文件内容分类而不是只看后缀</p>
+  <p>4️⃣ 没有"撤销"功能——移动错了回不去</p>
+  <div class="highlight"><strong>这些就是 Level 4→进阶的路。</strong>真正的 Agent 开发就是不断解决这些问题。</div>
+</div>
+
+<div class="card">
+  <h2>🌍 你还能造什么 Agent</h2>
+  <p>同样的循环（Think→Act→Observe），换上不同的工具和 System Prompt：</p>
+  <ul style="color:#cbd5e1;line-height:2.2;padding-left:1.25rem;">
+    <li><strong>代码审查 Agent</strong> — 工具：read_file, git_diff, run_tests</li>
+    <li><strong>网页爬虫 Agent</strong> — 工具：fetch_url, parse_html, extract_links</li>
+    <li><strong>数据分析 Agent</strong> — 工具：load_csv, calculate, plot_chart</li>
+    <li><strong>文档生成 Agent</strong> — 工具：read_code, write_markdown, create_diagram</li>
+  </ul>
+  <p style="text-align:center;margin-top:1rem;font-size:1.1rem;color:#fbbf24;"><strong>循环不变，工具决定能力。</strong></p>
+</div>
+
+<div class="card">
+  <h2>🎓 你学完了全部 11 课。回头看：</h2>
+  <ul class="checklist">
+    <li>AI 是什么（大象冰箱）</li>
+    <li>模型 vs API vs Key（厨房外卖）</li>
+    <li>Token = 钱（真实账单）</li>
+    <li>Prompt 公式（角色+任务+格式+约束+示例）</li>
+    <li>上下文窗口（AI 的短期记忆）</li>
+    <li>用好 Cline/Claude Code</li>
+    <li>结构化 Prompt（Few-Shot、思维链、强制格式）</li>
+    <li>用 Python 调 API（第一行 AI 代码）</li>
+    <li>Tool Calling（让 AI 用工具）</li>
+    <li>Agent 循环（Think→Act→Observe）</li>
+    <li>造一个 Agent（完整的文件整理 Agent）</li>
+  </ul>
+  <p style="margin-top:1rem;text-align:center;font-size:1.2rem;"><strong>你从一个"不知道 Token 是什么"的小白，变成了能写出自己 Agent 的人。</strong></p>
+</div>
+
+<a href="index.html" class="next-link">🏠 返回课程首页</a>
+</div>
+</body>
+</html>
