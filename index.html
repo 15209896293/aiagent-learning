@@ -4,48 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VibeHub · Vibe Coding 术语图鉴</title>
+<link rel="stylesheet" href="style.css">
 <style>
-/* ============ 设计令牌（照搬原站） ============ */
-:root{
-  --brand:#3559d8;
-  --brand-2:#2a47b0;
-  --brand-light:color-mix(in srgb,#3559d8 9%,#ffffff);
-  --brand-light-2:color-mix(in srgb,#3559d8 14%,#ffffff);
-  --bg:#ffffff;
-  --bg-soft:#fafafa;
-  --bg-demo:#f5f5f7;
-  --text:#18181b;
-  --text-2:#52525b;
-  --text-3:#8a8a93;
-  --border:#e4e4e7;
-  --border-light:#f0f0f2;
-  --border-hover:#d4d4d8;
-  --shadow-card:0 1px 2px rgba(0,0,0,.04),0 4px 14px rgba(0,0,0,.05);
-  --shadow-float:0 8px 30px rgba(0,0,0,.12);
-  --radius:12px;
-  --radius-sm:8px;
-  --radius-lg:16px;
-  --maxw:880px;
-  --font:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue","Microsoft YaHei",sans-serif;
-  --mono:"SF Mono","JetBrains Mono","Cascadia Code",Consolas,monospace;
-  --nav-h:60px;
-}
-[data-theme="dark"]{
-  --brand:#7c93ff;
-  --brand-light:color-mix(in srgb,#7c93ff 14%,#0a0a0c);
-  --brand-light-2:color-mix(in srgb,#7c93ff 20%,#0a0a0c);
-  --bg:#0a0a0c;
-  --bg-soft:#101013;
-  --bg-demo:#151518;
-  --text:#f4f4f5;
-  --text-2:#a1a1aa;
-  --text-3:#6b6b73;
-  --border:#26262b;
-  --border-light:#1c1c20;
-  --border-hover:#3a3a42;
-  --shadow-card:0 1px 2px rgba(0,0,0,.4),0 6px 18px rgba(0,0,0,.35);
-  --shadow-float:0 12px 40px rgba(0,0,0,.6);
-}
+/* 设计令牌已抽至根级 style.css（共享统一视觉世界，Electric Blue） */
+/* 以下为术语图鉴页专属样式 */
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
@@ -100,6 +62,10 @@ input,textarea{font-family:inherit}
   width:34px;height:34px;border-radius:9px;display:grid;place-items:center;
   color:var(--text-2);transition:.15s;font-size:15px;
 }
+.nav .icon-btn .ic{width:16px;height:16px;grid-area:1/1}
+.nav .menu a .ic{width:15px;height:15px;vertical-align:-2px;margin-right:3px}
+.nav .search .ic{width:14px;height:14px}
+.ic{width:1em;height:1em;display:inline-block;vertical-align:-.15em;flex-shrink:0}
 .nav .icon-btn:hover{background:var(--brand-light);color:var(--brand)}
 .nav .key-chip{
   font-size:11px;font-weight:600;color:var(--brand);
@@ -424,14 +390,15 @@ footer .right{margin-left:auto;display:flex;gap:14px}
     <a href="#" data-view="anti">防止 AI 味儿</a>
     <a href="#" data-view="skill">Skill</a>
     <a href="#" data-view="group">交流群</a>
-    <a href="software/index.html" style="background:var(--brand-light);color:var(--brand);font-weight:600">📦 软件库</a>
+    <a href="1/index.html" style="background:var(--brand-light);color:var(--brand);font-weight:600"><svg class="ic"><use href="1/icons.svg#i-book"/></svg>课程</a>
+    <a href="software/index.html" style="background:var(--brand-light);color:var(--brand);font-weight:600"><svg class="ic"><use href="1/icons.svg#i-package"/></svg>软件库</a>
   </div>
   <div class="spacer"></div>
   <div class="search">
-    <span style="color:var(--text-3)">⌕</span>
+    <span style="color:var(--text-3)"><svg class="ic"><use href="1/icons.svg#i-search"/></svg></span>
     <input id="searchInput" type="text" placeholder="搜索术语，如 输入框、Flex…">
   </div>
-  <button class="icon-btn" id="themeBtn" title="切换主题">🌙</button>
+  <button class="icon-btn" id="themeBtn" title="切换主题"><svg class="ic i-moon"><use href="1/icons.svg#i-moon"/></svg><svg class="ic i-sun" hidden><use href="1/icons.svg#i-sun"/></svg></button>
   <button class="key-chip" id="keyChip" title="设置 API Key">未设 Key</button>
 </nav>
 
@@ -1156,7 +1123,12 @@ document.getElementById("searchInput").addEventListener("input",e=>{
    =========================================================== */
 function applyTheme(){
   document.documentElement.setAttribute("data-theme",STATE.theme);
-  document.getElementById("themeBtn").textContent = STATE.theme==="dark"?"☀️":"🌙";
+  const btn=document.getElementById("themeBtn");
+  const dark=STATE.theme==="dark";
+  const moon=btn.querySelector(".i-moon");
+  const sun=btn.querySelector(".i-sun");
+  if(moon)moon.hidden=dark;
+  if(sun)sun.hidden=!dark;
 }
 document.getElementById("themeBtn").onclick=()=>{
   STATE.theme = STATE.theme==="dark"?"light":"dark";
@@ -2286,7 +2258,7 @@ function renderPanels(){
     <h2>交流群</h2>
     <p class="lead">加入群组，一起聊 Vibe Coding 和 AI Agent。</p>
     <div class="block"><h3>群入口（占位）</h3><p>把这里换成你的微信群/飞书/Slack 邀请链接或二维码。</p></div>
-    <div class="block"><h3>联系</h3><p>邮箱：<code>${SITE.email}</code><br>品牌：<code>${SITE.brand}</code></p></div>`;
+    <div class="block"><h3>联系</h3><p>邮箱：3053676729@qq.com<code>${SITE.email}</code><br>qq：3053676729<code>${SITE.brand}</code></p></div>`;
 }
 
 /* ===========================================================
