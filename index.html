@@ -390,15 +390,15 @@ footer .right{margin-left:auto;display:flex;gap:14px}
     <a href="#" data-view="anti">防止 AI 味儿</a>
     <a href="#" data-view="skill">Skill</a>
     <a href="#" data-view="group">交流群</a>
-    <a href="1/index.html" style="background:var(--brand-light);color:var(--brand);font-weight:600"><svg class="ic"><use href="1/icons.svg#i-book"/></svg>课程</a>
-    <a href="software/index.html" style="background:var(--brand-light);color:var(--brand);font-weight:600"><svg class="ic"><use href="1/icons.svg#i-package"/></svg>软件库</a>
+    <a href="courses/index.html" style="background:var(--brand-light);color:var(--brand);font-weight:600"><svg class="ic"><use href="courses/icons.svg#i-book"/></svg>课程</a>
+    <a href="software/index.html" style="background:var(--brand-light);color:var(--brand);font-weight:600"><svg class="ic"><use href="courses/icons.svg#i-package"/></svg>软件库</a>
   </div>
   <div class="spacer"></div>
   <div class="search">
-    <span style="color:var(--text-3)"><svg class="ic"><use href="1/icons.svg#i-search"/></svg></span>
+    <span style="color:var(--text-3)"><svg class="ic"><use href="courses/icons.svg#i-search"/></svg></span>
     <input id="searchInput" type="text" placeholder="搜索术语，如 输入框、Flex…">
   </div>
-  <button class="icon-btn" id="themeBtn" title="切换主题"><svg class="ic i-moon"><use href="1/icons.svg#i-moon"/></svg><svg class="ic i-sun" hidden><use href="1/icons.svg#i-sun"/></svg></button>
+  <button class="icon-btn" id="themeBtn" title="切换主题"><svg class="ic i-moon"><use href="courses/icons.svg#i-moon"/></svg><svg class="ic i-sun" hidden><use href="courses/icons.svg#i-sun"/></svg></button>
   <button class="key-chip" id="keyChip" title="设置 API Key">未设 Key</button>
 </nav>
 
@@ -490,10 +490,10 @@ footer .right{margin-left:auto;display:flex;gap:14px}
    站点配置 —— 个人信息占位，改成你自己的即可
    =========================================================== */
 const SITE = {
-  brand: "VibeHub",            // 你的品牌名
+  brand: "",            // 你的品牌名
   subtitle: "Vibe Coding 术语图鉴",
-  groupUrl: "#",               // 你的交流群链接
-  email: "#",                  // 你的联系邮箱
+  groupUrl: "",               // 你的交流群链接
+  email: "",                  // 你的联系邮箱
   beian: ""                    // 备案号（如有）
 };
 
@@ -787,37 +787,37 @@ const TERMS = [
 {id:"ds-wabi",domain:"design",section:"设计风格",cn:"日式侘寂",en:"Wabi-sabi",desc:"素旧留白多有安静的时间感。"},
 
 /* ===== AI Agent 实战 aiagent（融合原有课程与笔记） ===== */
-{id:"ag-l1",domain:"aiagent",section:"课程 · 认知层",cn:"第1课 AI 到底是什么",en:"Lesson 1",desc:"用把大象塞进冰箱的比喻搞懂 LLM。",link:"1/lesson-1-ai.html"},
-{id:"ag-l2",domain:"aiagent",section:"课程 · 认知层",cn:"第2课 模型 vs API vs Key",en:"Lesson 2",desc:"厨房和外卖的故事搞清三者的关系。",link:"1/lesson-2-api.html"},
-{id:"ag-l3",domain:"aiagent",section:"课程 · 认知层",cn:"第3课 Token 是什么",en:"Lesson 3",desc:"AI 不认字只认 token，钱花在哪算给你看。",link:"1/lesson-3-token.html"},
-{id:"ag-l4",domain:"aiagent",section:"课程 · 认知层",cn:"第4课 Prompt 提示词",en:"Lesson 4",desc:"跟 AI 说话的方式决定它有多聪明。",link:"1/lesson-4-prompt.html"},
-{id:"ag-l5",domain:"aiagent",section:"课程 · 认知层",cn:"第5课 上下文窗口",en:"Lesson 5",desc:"AI 的短期记忆有多大、为什么聊着聊着忘。",link:"1/lesson-5-context.html"},
-{id:"ag-l6",domain:"aiagent",section:"课程 · 使用者层",cn:"第6课 用好 Cline",en:"Lesson 6",desc:"让 AI 在 VS Code 里替你写代码。",link:"1/lesson-6-cline.html"},
-{id:"ag-l7",domain:"aiagent",section:"课程 · 使用者层",cn:"第7课 结构化 Prompt",en:"Lesson 7",desc:"Few-Shot、思维链、强制格式写手术刀级提示词。",link:"1/lesson-7-prompt-pro.html"},
-{id:"ag-l8",domain:"aiagent",section:"课程 · 搭建者层",cn:"第8课 用 Python 调 API",en:"Lesson 8",desc:"15 行代码直接跟 DeepSeek 对话。",link:"1/lesson-8-python-api.html"},
-{id:"ag-l9",domain:"aiagent",section:"课程 · 搭建者层",cn:"第9课 Tool Calling",en:"Lesson 9",desc:"让 AI 学会调用工具，Agent 的基础能力。",link:"1/lesson-9-tool-calling.html"},
-{id:"ag-l10",domain:"aiagent",section:"课程 · Agent 层",cn:"第10课 Agent 循环",en:"Lesson 10",desc:"Think→Act→Observe，AI 自己干活的核心。",link:"1/lesson-10-agent-loop.html"},
-{id:"ag-l11",domain:"aiagent",section:"课程 · Agent 层",cn:"第11课 造一个 Agent",en:"Lesson 11",desc:"从零写一个能自动整理文件的 AI Agent。",link:"1/lesson-11-build-agent.html"},
-{id:"ag-m-models",domain:"aiagent",section:"笔记 · 生态全景",cn:"模型",en:"Models",desc:"模型不等于产品，主流家族和版本号在说什么。",link:"01-ecosystem/01-models.md"},
-{id:"ag-m-apivsclient",domain:"aiagent",section:"笔记 · 生态全景",cn:"API vs 客户端",en:"API vs Client",desc:"网页聊天、IDE 插件、直接调接口三层架构区别。",link:"01-ecosystem/02-api-vs-client.md"},
-{id:"ag-m-context",domain:"aiagent",section:"笔记 · 生态全景",cn:"上下文窗口",en:"Context Window",desc:"各模型窗口大小、污染与 Prompt Caching 省钱。",link:"01-ecosystem/03-context-window.md"},
-{id:"ag-m-tokeneco",domain:"aiagent",section:"笔记 · 生态全景",cn:"Token 经济学",en:"Token Economics",desc:"一次请求花多少钱、烧钱的隐形杀手。",link:"01-ecosystem/04-token-economics.md"},
-{id:"ag-m-sysprompt",domain:"aiagent",section:"笔记 · 生态全景",cn:"系统提示词",en:"System Prompt",desc:"CLAUDE.md 就是系统提示词的一部分怎么写。",link:"01-ecosystem/05-system-prompt.md"},
-{id:"ag-t-toolcalling",domain:"aiagent",section:"笔记 · 工具体系",cn:"工具调用",en:"Tool Calling",desc:"完整生命周期、Function Schema、单轮多轮工具链。",link:"02-tools/01-tool-calling.md"},
-{id:"ag-t-builtin",domain:"aiagent",section:"笔记 · 工具体系",cn:"内置工具",en:"Built-in Tools",desc:"Claude Code/Trae/ZCode 各自工具箱与边界。",link:"02-tools/02-builtin-tools.md"},
-{id:"ag-t-mcp",domain:"aiagent",section:"笔记 · 工具体系",cn:"MCP",en:"MCP",desc:"让 Agent 接外部系统的协议怎么用。",link:"02-tools/03-mcp.md"},
-{id:"ag-t-skills",domain:"aiagent",section:"笔记 · 工具体系",cn:"Skills",en:"Skills",desc:"可复用的任务能力封装。",link:"02-tools/04-skills.md"},
-{id:"ag-t-hooks",domain:"aiagent",section:"笔记 · 工具体系",cn:"Hooks",en:"Hooks",desc:"在 Agent 流程节点上挂自定义逻辑。",link:"02-tools/05-hooks.md"},
-{id:"ag-w-decomp",domain:"aiagent",section:"笔记 · 工作流",cn:"任务拆解",en:"Task Decomposition",desc:"好 Prompt 四要素、Plan-then-Execute 模式。",link:"03-workflow/01-task-decomposition.md"},
-{id:"ag-w-realcase",domain:"aiagent",section:"笔记 · 工作流",cn:"真实开发案例",en:"Real Dev Case",desc:"看板、报告、调代码三个完整案例。",link:"03-workflow/02-real-dev-case.md"},
-{id:"ag-w-comm",domain:"aiagent",section:"笔记 · 工作流",cn:"沟通",en:"Communication",desc:"什么时候中断 Agent、什么时候让它继续。",link:"03-workflow/03-communication.md"},
-{id:"ag-w-multi",domain:"aiagent",section:"笔记 · 工作流",cn:"多 Agent",en:"Multi-Agent",desc:"多个 Agent 分工协作的模式与坑。",link:"03-workflow/04-multi-agent.md"},
-{id:"ag-p-burn",domain:"aiagent",section:"笔记 · 避坑与安全",cn:"Token 燃烧",en:"Token Burning",desc:"不知不觉烧 token 的场景与止血方法。",link:"04-pitfalls/01-token-burning.md"},
-{id:"ag-p-sec",domain:"aiagent",section:"笔记 · 避坑与安全",cn:"安全",en:"Security",desc:"权限、密钥、注入等 Agent 安全边界。",link:"04-pitfalls/02-security.md"},
-{id:"ag-p-whennot",domain:"aiagent",section:"笔记 · 避坑与安全",cn:"何时不用 Agent",en:"When Not to Use",desc:"判断什么任务不该交给 Agent 的框架。",link:"04-pitfalls/03-when-not-to-use.md"},
-{id:"ag-p-hallu",domain:"aiagent",section:"笔记 · 避坑与安全",cn:"幻觉",en:"Hallucination",desc:"Agent 编造的成因与抑制手段。",link:"04-pitfalls/04-hallucination.md"},
-{id:"ag-c-tools",domain:"aiagent",section:"笔记 · 对比评测",cn:"工具对比",en:"Tools Comparison",desc:"Claude Code/Trae/ZCode 横向对比。",link:"05-comparison/01-tools-comparison.md"},
-{id:"ag-c-models",domain:"aiagent",section:"笔记 · 对比评测",cn:"模型选择",en:"Model Selection",desc:"不同任务选哪个模型最合适的依据。",link:"05-comparison/02-model-selection.md"}
+{id:"ag-l1",domain:"aiagent",section:"课程 · 认知层",cn:"第1课 AI 到底是什么",en:"Lesson 1",desc:"用把大象塞进冰箱的比喻搞懂 LLM。",link:"courses/lesson-1-ai.html"},
+{id:"ag-l2",domain:"aiagent",section:"课程 · 认知层",cn:"第2课 模型 vs API vs Key",en:"Lesson 2",desc:"厨房和外卖的故事搞清三者的关系。",link:"courses/lesson-2-api.html"},
+{id:"ag-l3",domain:"aiagent",section:"课程 · 认知层",cn:"第3课 Token 是什么",en:"Lesson 3",desc:"AI 不认字只认 token，钱花在哪算给你看。",link:"courses/lesson-3-token.html"},
+{id:"ag-l4",domain:"aiagent",section:"课程 · 认知层",cn:"第4课 Prompt 提示词",en:"Lesson 4",desc:"跟 AI 说话的方式决定它有多聪明。",link:"courses/lesson-4-prompt.html"},
+{id:"ag-l5",domain:"aiagent",section:"课程 · 认知层",cn:"第5课 上下文窗口",en:"Lesson 5",desc:"AI 的短期记忆有多大、为什么聊着聊着忘。",link:"courses/lesson-5-context.html"},
+{id:"ag-l6",domain:"aiagent",section:"课程 · 使用者层",cn:"第6课 用好 Cline",en:"Lesson 6",desc:"让 AI 在 VS Code 里替你写代码。",link:"courses/lesson-6-cline.html"},
+{id:"ag-l7",domain:"aiagent",section:"课程 · 使用者层",cn:"第7课 结构化 Prompt",en:"Lesson 7",desc:"Few-Shot、思维链、强制格式写手术刀级提示词。",link:"courses/lesson-7-prompt-pro.html"},
+{id:"ag-l8",domain:"aiagent",section:"课程 · 搭建者层",cn:"第8课 用 Python 调 API",en:"Lesson 8",desc:"15 行代码直接跟 DeepSeek 对话。",link:"courses/lesson-8-python-api.html"},
+{id:"ag-l9",domain:"aiagent",section:"课程 · 搭建者层",cn:"第9课 Tool Calling",en:"Lesson 9",desc:"让 AI 学会调用工具，Agent 的基础能力。",link:"courses/lesson-9-tool-calling.html"},
+{id:"ag-l10",domain:"aiagent",section:"课程 · Agent 层",cn:"第10课 Agent 循环",en:"Lesson 10",desc:"Think→Act→Observe，AI 自己干活的核心。",link:"courses/lesson-10-agent-loop.html"},
+{id:"ag-l11",domain:"aiagent",section:"课程 · Agent 层",cn:"第11课 造一个 Agent",en:"Lesson 11",desc:"从零写一个能自动整理文件的 AI Agent。",link:"courses/lesson-11-build-agent.html"},
+{id:"ag-m-models",domain:"aiagent",section:"笔记 · 生态全景",cn:"模型",en:"Models",desc:"模型不等于产品，主流家族和版本号在说什么。",link:"course-notes/01-ecosystem/01-models.md"},
+{id:"ag-m-apivsclient",domain:"aiagent",section:"笔记 · 生态全景",cn:"API vs 客户端",en:"API vs Client",desc:"网页聊天、IDE 插件、直接调接口三层架构区别。",link:"course-notes/01-ecosystem/02-api-vs-client.md"},
+{id:"ag-m-context",domain:"aiagent",section:"笔记 · 生态全景",cn:"上下文窗口",en:"Context Window",desc:"各模型窗口大小、污染与 Prompt Caching 省钱。",link:"course-notes/01-ecosystem/03-context-window.md"},
+{id:"ag-m-tokeneco",domain:"aiagent",section:"笔记 · 生态全景",cn:"Token 经济学",en:"Token Economics",desc:"一次请求花多少钱、烧钱的隐形杀手。",link:"course-notes/01-ecosystem/04-token-economics.md"},
+{id:"ag-m-sysprompt",domain:"aiagent",section:"笔记 · 生态全景",cn:"系统提示词",en:"System Prompt",desc:"CLAUDE.md 就是系统提示词的一部分怎么写。",link:"course-notes/01-ecosystem/05-system-prompt.md"},
+{id:"ag-t-toolcalling",domain:"aiagent",section:"笔记 · 工具体系",cn:"工具调用",en:"Tool Calling",desc:"完整生命周期、Function Schema、单轮多轮工具链。",link:"course-notes/02-tools/01-tool-calling.md"},
+{id:"ag-t-builtin",domain:"aiagent",section:"笔记 · 工具体系",cn:"内置工具",en:"Built-in Tools",desc:"Claude Code/Trae/ZCode 各自工具箱与边界。",link:"course-notes/02-tools/02-builtin-tools.md"},
+{id:"ag-t-mcp",domain:"aiagent",section:"笔记 · 工具体系",cn:"MCP",en:"MCP",desc:"让 Agent 接外部系统的协议怎么用。",link:"course-notes/02-tools/03-mcp.md"},
+{id:"ag-t-skills",domain:"aiagent",section:"笔记 · 工具体系",cn:"Skills",en:"Skills",desc:"可复用的任务能力封装。",link:"course-notes/02-tools/04-skills.md"},
+{id:"ag-t-hooks",domain:"aiagent",section:"笔记 · 工具体系",cn:"Hooks",en:"Hooks",desc:"在 Agent 流程节点上挂自定义逻辑。",link:"course-notes/02-tools/05-hooks.md"},
+{id:"ag-w-decomp",domain:"aiagent",section:"笔记 · 工作流",cn:"任务拆解",en:"Task Decomposition",desc:"好 Prompt 四要素、Plan-then-Execute 模式。",link:"course-notes/03-workflow/01-task-decomposition.md"},
+{id:"ag-w-realcase",domain:"aiagent",section:"笔记 · 工作流",cn:"真实开发案例",en:"Real Dev Case",desc:"看板、报告、调代码三个完整案例。",link:"course-notes/03-workflow/02-real-dev-case.md"},
+{id:"ag-w-comm",domain:"aiagent",section:"笔记 · 工作流",cn:"沟通",en:"Communication",desc:"什么时候中断 Agent、什么时候让它继续。",link:"course-notes/03-workflow/03-communication.md"},
+{id:"ag-w-multi",domain:"aiagent",section:"笔记 · 工作流",cn:"多 Agent",en:"Multi-Agent",desc:"多个 Agent 分工协作的模式与坑。",link:"course-notes/03-workflow/04-multi-agent.md"},
+{id:"ag-p-burn",domain:"aiagent",section:"笔记 · 避坑与安全",cn:"Token 燃烧",en:"Token Burning",desc:"不知不觉烧 token 的场景与止血方法。",link:"course-notes/04-pitfalls/01-token-burning.md"},
+{id:"ag-p-sec",domain:"aiagent",section:"笔记 · 避坑与安全",cn:"安全",en:"Security",desc:"权限、密钥、注入等 Agent 安全边界。",link:"course-notes/04-pitfalls/02-security.md"},
+{id:"ag-p-whennot",domain:"aiagent",section:"笔记 · 避坑与安全",cn:"何时不用 Agent",en:"When Not to Use",desc:"判断什么任务不该交给 Agent 的框架。",link:"course-notes/04-pitfalls/03-when-not-to-use.md"},
+{id:"ag-p-hallu",domain:"aiagent",section:"笔记 · 避坑与安全",cn:"幻觉",en:"Hallucination",desc:"Agent 编造的成因与抑制手段。",link:"course-notes/04-pitfalls/04-hallucination.md"},
+{id:"ag-c-tools",domain:"aiagent",section:"笔记 · 对比评测",cn:"工具对比",en:"Tools Comparison",desc:"Claude Code/Trae/ZCode 横向对比。",link:"course-notes/05-comparison/01-tools-comparison.md"},
+{id:"ag-c-models",domain:"aiagent",section:"笔记 · 对比评测",cn:"模型选择",en:"Model Selection",desc:"不同任务选哪个模型最合适的依据。",link:"course-notes/05-comparison/02-model-selection.md"}
 ];
 /* TERMS_DATA_INSERT */
 
