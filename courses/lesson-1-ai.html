@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第 1 课 · AI 到底是什么</title>
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="lesson.css">
+<style>
+  /* 本页专属演示组件（骨架已由 ../style.css + lesson.css 提供） */
+
+  /* 大象冰箱图 */
+  .fridge-demo {
+    display: flex; align-items: center; justify-content: center; gap: 1rem;
+    padding: 1.5rem; flex-wrap: wrap;
+    background: var(--bg-demo); border-radius: 12px; margin: 1rem 0;
+  }
+  .step {
+    text-align: center; padding: 0.75rem 1rem; border-radius: 12px;
+    background: var(--bg); border: 1px solid var(--border); min-width: 80px;
+  }
+  .step .emoji { font-size: 2.5rem; }
+  .step .label { font-size: 0.8rem; color: var(--text-3); margin-top: 0.35rem; }
+  .arrow { font-size: 1.5rem; color: var(--text-3); }
+
+  .try-btn {
+    display: inline-block; padding: 0.75rem 1.5rem;
+    background: var(--brand); color: #fff; border: none; border-radius: 8px;
+    font-size: 1rem; cursor: pointer; margin: 0.5rem 0.5rem 0.5rem 0; transition: background 0.2s;
+  }
+  .try-btn:hover { background: var(--brand-2); }
+
+  /* 喂数据动画 */
+  .feeding-demo {
+    display: flex; flex-direction: column; gap: 0.5rem;
+    padding: 1rem; background: var(--bg-demo); border-radius: 12px;
+    margin: 1rem 0; font-family: monospace; font-size: 0.85rem;
+  }
+  .data-line { color: var(--text-3); }
+  .data-line .num { color: #f59e0b; }
+  .result { color: #16a34a; font-weight: bold; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px dashed var(--border); }
+</style>
+</head>
+<body class="lesson-page">
+<nav class="nav">
+  <a class="logo" href="../index.html">
+    <span class="mark">V</span><span>Vibe<b>Hub</b></span><span class="sub">课程</span>
+  </a>
+  <div class="menu">
+    <a href="../index.html">术语图鉴</a>
+    <a href="index.html">课程</a>
+    <a href="../software/index.html">软件库</a>
+  </div>
+  <div class="spacer"></div>
+  <button class="icon-btn" id="themeBtn" title="切换主题"><svg class="ic i-moon"><use href="icons.svg#i-moon"/></svg><svg class="ic i-sun" hidden><use href="icons.svg#i-sun"/></svg></button>
+</nav>
+<div class="container">
+
+  <div class="breadcrumb"><svg class="ic"><use href="icons.svg#i-home"/></svg> <a href="index.html">课程首页</a> → 第 1 课</div>
+
+  <h1><svg class="ic"><use href="icons.svg#i-robot"/></svg> 第 1 课 · AI 到底是什么</h1>
+  <p class="subtitle">不是魔法，不是人脑，而是一个"猜下一个字"的数学公式</p>
+
+  <!-- 核心比喻 -->
+  <div class="card">
+    <h2><svg class="ic"><use href="icons.svg#i-elephant"/></svg> 把大象塞进冰箱</h2>
+    <p>你有大象、冰箱、和三个步骤。这就是 AI 的<strong>全部工作原理</strong>：</p>
+
+    <div class="fridge-demo">
+      <div class="step">
+        <div class="emoji"><svg class="ic"><use href="icons.svg#i-inbox"/></svg></div>
+        <div class="label">你输入文字<br><small>"帮我写一首诗"</small></div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step">
+        <div class="emoji"><svg class="ic"><use href="icons.svg#i-gear"/></svg></div>
+        <div class="label">AI 内部计算<br><small>几千亿次数学运算</small></div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step">
+        <div class="emoji"><svg class="ic"><use href="icons.svg#i-send"/></svg></div>
+        <div class="label">输出结果<br><small>"明月几时有..."</small></div>
+      </div>
+    </div>
+
+    <p>所谓的"大语言模型"（LLM = Large Language Model），就是一个<strong>输入文字 → 输出文字</strong>的程序。跟你手机上输入法的"联想词"功能同一个原理——只是比它强一万亿倍。</p>
+  </div>
+
+  <!-- 它怎么学会的 -->
+  <div class="card">
+    <h2><svg class="ic"><use href="icons.svg#i-book"/></svg> AI 是怎么"学会"的？</h2>
+    <p>它不是人类那种"理解"，而是<strong>喂数据</strong>：</p>
+
+    <div class="feeding-demo">
+      <div class="data-line">喂给它：<span class="num">互联网上几乎所有的网页</span></div>
+      <div class="data-line">喂给它：<span class="num">几乎所有已出版的书</span></div>
+      <div class="data-line">喂给它：<span class="num">GitHub 上所有的代码</span></div>
+      <div class="data-line">喂给它：<span class="num">维基百科、论文、论坛帖子...</span></div>
+      <div class="data-line" style="margin-top:0.5rem;color:#94a3b8">总共约 <span class="num">15万亿</span> 个 Token 的文本</div>
+      <div class="result">→ 训练完成！现在它会"预测"下一个字该写什么了</div>
+    </div>
+
+    <div class="highlight">
+      <strong><svg class="ic"><use href="icons.svg#i-key"/></svg> 关键理解：</strong>AI 不"思考"，它只是看过了太多文本，学会了"在什么情况下，下一个字最可能是什么"。就像你听了 1000 首歌之后，自然知道"祝你生日___"后面该填什么。
+    </div>
+  </div>
+
+  <!-- 它擅长什么，不擅长什么 -->
+  <div class="card">
+    <h2><svg class="ic"><use href="icons.svg#i-check"/></svg> AI 擅长 vs <svg class="ic"><use href="icons.svg#i-cross"/></svg> AI 不擅长</h2>
+    <div class="comparison">
+      <div class="col-good">
+        <h4><svg class="ic"><use href="icons.svg#i-check"/></svg> 擅长</h4>
+        • 写代码、写文案、翻译<br>
+        • 在大量信息中找规律<br>
+        • 按格式输出（表格、JSON）<br>
+        • 解释概念、回答问题<br>
+        • 模仿某种风格写作
+      </div>
+      <div class="col-bad">
+        <h4><svg class="ic"><use href="icons.svg#i-cross"/></svg> 不擅长</h4>
+        • 事实判断（会"幻觉"编造）<br>
+        • 数学计算（现在好多了）<br>
+        • 知道"今天发生了什么"<br>
+        • 真正理解情感<br>
+        • 替代你的判断力
+      </div>
+    </div>
+  </div>
+
+  <!-- 动手 -->
+  <div class="card">
+    <h2><svg class="ic"><use href="icons.svg#i-hand"/></svg> 动手试：感受 AI 的"预测下一个字"</h2>
+    <p>你现在正在用的 DeepSeek，本质上就是在做这件事。打开你的终端或者 VS Code 里的 Cline，试试这句话：</p>
+    <div class="highlight">
+      <code>用"如果我是一朵云"开头，写 3 句话。只写 3 句，不要解释。</code>
+    </div>
+    <p>AI 会"猜"出接下来的文字——它没有真的变成一朵云，它只是看过太多诗，所以知道"如果我是..."后面通常接什么。</p>
+  </div>
+
+  <!-- 关键概念 -->
+  <div class="card">
+    <h2><svg class="ic"><use href="icons.svg#i-clipboard"/></svg> 这一课你带走的 3 个概念</h2>
+    <p><span class="num">1</span> <strong>LLM（大语言模型）</strong> = 一个超级"联想词"程序，输入文字，输出文字</p>
+    <p><span class="num">2</span> <strong>训练</strong> = 喂给它海量文本，让它学会"在什么情况下该说什么话"</p>
+    <p><span class="num">3</span> <strong>AI 不思考</strong> — 它是统计学，不是意识。你才是做决策的那个人</p>
+  </div>
+
+  <a href="lesson-2-api.html" class="next-link"><svg class="ic"><use href="icons.svg#i-arrow"/></svg> 下一课：模型 vs API vs Key · 厨房和外卖的故事</a>
+
+</div>
+<footer class="footer"><div class="inner">
+  <span>© VibeHub · AI Agent 实战指南</span>
+  <div style="display:flex;gap:16px"><a href="../index.html">术语图鉴</a><a href="index.html">课程</a><a href="../software/index.html">软件库</a></div>
+</div></footer>
+<script src="lesson.js"></script>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第 10 课 · Agent 循环</title>
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="lesson.css">
+<style>
+  /* 本页专属演示组件（骨架已由 ../style.css + lesson.css 提供） */
+
+  /* 循环图 */
+  .loop-viz {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 1.5rem;
+    background: var(--bg-demo);
+    border-radius: 16px;
+    margin: 1rem 0;
+  }
+  .loop-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .loop-box {
+    width: 160px;
+    padding: 1rem;
+    border-radius: 12px;
+    text-align: center;
+    border: 2px solid;
+    font-weight: bold;
+  }
+  .box-think { border-color: #a78bfa; background: #a78bfa15; color: #c4b5fd; }
+  .box-act { border-color: #fbbf24; background: #fbbf2415; color: #fcd34d; }
+  .box-observe { border-color: #4ade80; background: #4ade8015; color: #86efac; }
+  .box-stop { border-color: #f87171; background: #f8717115; color: #fca5a5; }
+  .loop-arrow-v { color: var(--text-3); font-size: 1.5rem; }
+  .loop-arrow-h { color: var(--text-3); font-size: 1.2rem; }
+
+  pre { background: var(--bg-demo); border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem; overflow-x: auto; margin: 1rem 0; font-size: 0.85rem; line-height: 1.8; font-family: 'Consolas', monospace; }
+  pre .kw { color: #c084fc; }
+  pre .str { color: #4ade80; }
+  pre .cmt { color: var(--text-3); }
+  pre .fn { color: var(--brand); }
+
+  .analogy { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+  .analogy > div { background: var(--bg-demo); padding: 1rem; border-radius: 10px; text-align: center; }
+  .analogy .icon { font-size: 2rem; margin-bottom: 0.35rem; }
+  .analogy h4 { margin-bottom: 0.25rem; }
+
+
+</style>
+</head>
+<body class="lesson-page">
+<nav class="nav">
+  <a class="logo" href="../index.html">
+    <span class="mark">V</span><span>Vibe<b>Hub</b></span><span class="sub">课程</span>
+  </a>
+  <div class="menu">
+    <a href="../index.html">术语图鉴</a>
+    <a href="index.html">课程</a>
+    <a href="../software/index.html">软件库</a>
+  </div>
+  <div class="spacer"></div>
+  <button class="icon-btn" id="themeBtn" title="切换主题"><svg class="ic i-moon"><use href="icons.svg#i-moon"/></svg><svg class="ic i-sun" hidden><use href="icons.svg#i-sun"/></svg></button>
+</nav>
+<div class="container">
+<div class="breadcrumb"><svg class="ic"><use href="icons.svg#i-home"/></svg> <a href="index.html">课程首页</a> → 第 10 课</div>
+<h1><svg class="ic"><use href="icons.svg#i-bomb"/></svg> 第 10 课 · Agent 循环</h1>
+<p class="subtitle">Think → Act → Observe → Think → ... 这就是 AI 自己干活的核心秘密</p>
+
+<div class="card">
+  <h2><svg class="ic"><use href="icons.svg#i-user"/></svg> 类比：人类是怎么干活的？</h2>
+  <div class="analogy">
+    <div>
+      <div class="icon"><svg class="ic"><use href="icons.svg#i-brain"/></svg></div>
+      <h4>思考</h4>
+      <p style="font-size:0.8rem;color:#94a3b8;">"我要写一个登录页面……需要什么？邮箱框、密码框、按钮"</p>
+    </div>
+    <div>
+      <div class="icon"><svg class="ic"><use href="icons.svg#i-pencil"/></svg></div>
+      <h4>行动</h4>
+      <p style="font-size:0.8rem;color:#94a3b8;">打开编辑器，写 HTML</p>
+    </div>
+    <div>
+      <div class="icon"><svg class="ic"><use href="icons.svg#i-eye"/></svg></div>
+      <h4>观察</h4>
+      <p style="font-size:0.8rem;color:#94a3b8;">预览页面，"嗯，按钮颜色不对"</p>
+    </div>
+    <div>
+      <div class="icon"><svg class="ic"><use href="icons.svg#i-repeat"/></svg></div>
+      <h4>调整</h4>
+      <p style="font-size:0.8rem;color:#94a3b8;">改 CSS，再预览，搞定</p>
+    </div>
+  </div>
+  <p><strong>Agent 做的完全一样。</strong>只是循环速度是你的几百倍。</p>
+</div>
+
+<div class="card">
+  <h2><svg class="ic"><use href="icons.svg#i-arrow-loop"/></svg> Agent 的核心循环</h2>
+  <div class="loop-viz">
+    <div class="loop-row">
+      <div class="loop-box box-think"><svg class="ic"><use href="icons.svg#i-brain"/></svg> THINK<br><small>AI 思考下一步做什么</small></div>
+      <span class="loop-arrow-h">→</span>
+      <div class="loop-box box-act"><svg class="ic"><use href="icons.svg#i-wrench"/></svg> ACT<br><small>调用工具/执行动作</small></div>
+    </div>
+    <span class="loop-arrow-v">↓</span>
+    <div class="loop-row">
+      <div class="loop-box box-stop"><svg class="ic"><use href="icons.svg#i-stop"/></svg> STOP<br><small>任务完成？退出</small></div>
+      <span class="loop-arrow-h">←</span>
+      <div class="loop-box box-observe"><svg class="ic"><use href="icons.svg#i-eye"/></svg> OBSERVE<br><small>观察工具返回的结果</small></div>
+    </div>
+  </div>
+  <p style="text-align:center;color:#94a3b8;font-size:0.85rem;">这个简单的循环就是 <strong>Claude Code、Cline、Cursor——所有 AI 编程工具——的核心架构</strong>。</p>
+</div>
+
+<div class="card">
+  <h2><svg class="ic"><use href="icons.svg#i-code"/></svg> 伪代码：Agent 循环就是这样</h2>
+  <pre>
+<span class="kw">def</span> <span class="fn">agent_loop</span>(task, tools, max_steps=10):
+    messages = [{<span class="str">"role"</span>: <span class="str">"system"</span>, <span class="str">"content"</span>: SYSTEM_PROMPT},
+                {<span class="str">"role"</span>: <span class="str">"user"</span>, <span class="str">"content"</span>: task}]
+
+    <span class="kw">for</span> step <span class="kw">in</span> <span class="fn">range</span>(max_steps):
+        <span class="cmt"># === THINK === AI 分析现状，决定下一步</span>
+        response = client.chat.completions.<span class="fn">create</span>(
+            model=<span class="str">"deepseek-chat"</span>,
+            messages=messages,
+            tools=tools
+        )
+
+        msg = response.choices[<span class="fn">0</span>].message
+
+        <span class="cmt"># === STOP? === 如果 AI 觉得完成了，退出</span>
+        <span class="kw">if</span> <span class="kw">not</span> msg.tool_calls:
+            <span class="kw">return</span> msg.content  <span class="cmt"># 任务完成！</span>
+
+        <span class="cmt"># === ACT === 执行 AI 请求的工具</span>
+        <span class="kw">for</span> tool_call <span class="kw">in</span> msg.tool_calls:
+            result = <span class="fn">execute_tool</span>(tool_call)
+
+            <span class="cmt"># === OBSERVE === 把结果告诉 AI</span>
+            messages.<span class="fn">append</span>({<span class="str">"role"</span>: <span class="str">"tool"</span>,
+                              <span class="str">"content"</span>: result})
+
+    <span class="kw">return</span> <span class="str">"达到最大步数，任务未完成"</span>
+</pre>
+  <p><strong>这就是全部。</strong>没有魔法，没有黑科技。就是一个 while 循环。</p>
+</div>
+
+<div class="card">
+  <h2><svg class="ic"><use href="icons.svg#i-warn"/></svg> Agent 循环的三大"坑"</h2>
+  <p><strong>1. 无限循环</strong> — AI 可能一直在"读文件→思考→再读文件→再思考"出不来。解法：设置 max_steps。</p>
+  <p><strong>2. 幻觉放大</strong> — Agent 每步基于上一步的"观察"做决策。如果工具返回了错误信息，AI 会基于错误继续推理——一环错，环环错。</p>
+  <p><strong>3. Token 黑洞</strong> — 每轮循环都把历史 messages 全传一遍。循环 10 轮，上下文轻松到几万 Token。钱就是这么烧的。</p>
+</div>
+
+<div class="card"><h2><svg class="ic"><use href="icons.svg#i-clipboard"/></svg> 这一课你带走的 3 个概念</h2>
+<p><span class="num">1</span> <strong>Agent = Think → Act → Observe 循环</strong>，直到任务完成或达到上限</p>
+<p><span class="num">2</span> <strong>没有魔法</strong> — 就是一个 while 循环 + Tool Calling</p>
+<p><span class="num">3</span> <strong>陷阱</strong>：无限循环、幻觉放大、Token 黑洞（三个都要防）</p></div>
+
+<a href="lesson-11-build-agent.html" class="next-link"><svg class="ic"><use href="icons.svg#i-arrow"/></svg> 最后一课：造一个 Agent · 从零写出一个能自动干活的 AI</a>
+</div>
+<footer class="footer"><div class="inner">
+  <span>© VibeHub · AI Agent 实战指南</span>
+  <div style="display:flex;gap:16px"><a href="../index.html">术语图鉴</a><a href="index.html">课程</a><a href="../software/index.html">软件库</a></div>
+</div></footer>
+<script src="lesson.js"></script>
+</body>
+</html>

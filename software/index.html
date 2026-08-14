@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>软件库 · VibeHub</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+/* 设计令牌已抽至根级 ../style.css（共享统一视觉世界，Electric Blue） */
+/* 软件站布局覆盖：内容更宽 + 侧边栏 */
+:root{
+  --maxw:1080px;
+}
+/* ============ 软件站专属样式 ============ */
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font);
+  background:var(--bg);
+  color:var(--text);
+  font-size:15px;
+  line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+  transition:background .25s,color .25s;
+}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+
+/* ============ 顶部导航 ============ */
+.nav{
+  position:sticky;top:0;z-index:50;
+  height:var(--nav-h);
+  background:color-mix(in srgb,var(--bg) 86%,transparent);
+  backdrop-filter:saturate(180%) blur(20px);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:1px solid var(--border-light);
+  display:flex;align-items:center;gap:8px;
+  padding:0 24px;
+}
+.nav .logo{display:flex;align-items:center;gap:9px;font-size:16px;font-weight:650;letter-spacing:-.2px;margin-right:14px}
+.nav .logo .mark{
+  width:26px;height:26px;border-radius:7px;
+  background:linear-gradient(135deg,var(--brand),#7c93ff);
+  display:grid;place-items:center;color:#fff;font-weight:800;font-size:14px;
+  box-shadow:0 2px 8px color-mix(in srgb,var(--brand) 40%,transparent);
+}
+.nav .logo .sub{font-size:11px;font-weight:500;color:var(--text-3);margin-left:1px}
+.nav .menu{display:flex;align-items:center;gap:2px}
+.nav .menu a{
+  padding:7px 12px;border-radius:8px;font-size:14px;color:var(--text-2);
+  transition:background .15s,color .15s;
+}
+.nav .menu a:hover{background:var(--brand-light);color:var(--brand)}
+.nav .menu a.active{color:var(--brand);font-weight:600}
+.nav .spacer{flex:1}
+.nav .icon-btn{
+  width:34px;height:34px;border-radius:9px;display:grid;place-items:center;
+  color:var(--text-2);transition:.15s;font-size:15px;
+}
+.nav .icon-btn .ic{width:16px;height:16px;grid-area:1/1}
+.s-btn .ic{width:14px;height:14px}
+.empty-state .ic{color:var(--text-3)}
+.nav .icon-btn:hover{background:var(--brand-light);color:var(--brand)}
+.nav .home-link{
+  font-size:13px;color:var(--text-3);padding:6px 10px;border-radius:7px;
+  border:1px solid var(--border);transition:.15s;display:flex;align-items:center;gap:5px;
+}
+.nav .home-link:hover{border-color:var(--brand);color:var(--brand)}
+@media(max-width:760px){
+  .nav{padding:0 14px;gap:4px}
+  .nav .menu{display:none}
+  .nav .logo .sub{display:none}
+}
+
+/* ============ 主体布局 ============ */
+.main-wrap{
+  max-width:var(--maxw);margin:0 auto;
+  display:flex;gap:0;min-height:calc(100vh - var(--nav-h) - 80px);
+}
+@media(max-width:760px){.main-wrap{flex-direction:column}}
+
+/* ============ 侧边栏 ============ */
+.sidebar{
+  width:var(--sidebar-w);flex-shrink:0;
+  padding:16px 0;
+  border-right:1px solid var(--border-light);
+  position:sticky;top:var(--nav-h);
+  height:calc(100vh - var(--nav-h));
+  overflow-y:auto;
+  background:var(--bg);
+}
+.sidebar .cat-title{
+  font-size:11px;font-weight:650;color:var(--text-3);text-transform:uppercase;
+  letter-spacing:.5px;padding:10px 16px 6px;
+}
+.sidebar .cat-item{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 16px;font-size:13.5px;color:var(--text-2);
+  border-radius:0;transition:all .15s;cursor:pointer;
+  border-left:2px solid transparent;
+}
+.sidebar .cat-item:hover{background:var(--brand-light);color:var(--brand)}
+.sidebar .cat-item.active{
+  background:var(--brand-light);color:var(--brand);
+  border-left-color:var(--brand);font-weight:600;
+}
+.sidebar .cat-item .icon{font-size:16px;width:22px;text-align:center;flex-shrink:0;display:grid;place-items:center}
+.sidebar .cat-item .icon img{width:16px;height:16px;object-fit:contain;display:block}
+.sidebar .cat-item .count{
+  margin-left:auto;font-size:11px;color:var(--text-3);
+  background:var(--bg-soft);padding:1px 7px;border-radius:99px;
+}
+.sidebar-search{
+  margin:8px 12px 4px;
+  display:flex;align-items:center;gap:6px;
+  background:var(--bg-soft);border:1px solid var(--border);
+  border-radius:8px;padding:6px 10px;transition:.15s;
+}
+.sidebar-search:focus-within{border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-light)}
+.sidebar-search input{
+  border:none;background:none;outline:none;font-size:13px;flex:1;color:var(--text);min-width:0;
+}
+.sidebar-search input::placeholder{color:var(--text-3)}
+@media(max-width:760px){
+  .sidebar{
+    width:100%;height:auto;position:static;
+    border-right:none;border-bottom:1px solid var(--border-light);
+    display:flex;flex-wrap:wrap;gap:4px;padding:10px 14px;overflow-x:auto;
+  }
+  .sidebar .cat-title{display:none}
+  .sidebar .cat-item{
+    font-size:12px;padding:5px 10px;border-radius:8px;border-left:none;
+    border:1px solid var(--border);white-space:nowrap;
+  }
+  .sidebar .cat-item.active{border-color:var(--brand)}
+  .sidebar .cat-item .count{margin-left:4px}
+  .sidebar-search{display:none}
+}
+
+/* ============ 内容区 ============ */
+.content{flex:1;padding:20px 24px 40px;min-width:0}
+.content-header{margin-bottom:16px}
+.content-header h2{font-size:22px;font-weight:700;letter-spacing:-.3px;margin-bottom:4px}
+.content-header .info{font-size:13px;color:var(--text-3)}
+.content-header .info .tag{
+  display:inline-block;background:var(--brand-light);color:var(--brand);
+  padding:2px 8px;border-radius:5px;font-size:12px;font-weight:600;margin-left:6px;
+}
+
+/* ============ 搜索栏（内容区顶部） ============ */
+.search-bar{
+  display:flex;gap:8px;margin-bottom:18px;
+}
+.search-bar input{
+  flex:1;border:1px solid var(--border);border-radius:10px;padding:9px 14px;
+  font-size:14px;outline:none;color:var(--text);background:var(--bg);transition:.15s;
+}
+.search-bar input:focus{border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-light)}
+.search-bar input::placeholder{color:var(--text-3)}
+
+/* ============ 软件卡片网格 ============ */
+.software-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:12px;
+}
+.software-card{
+  background:var(--bg);border:0.8px solid var(--border);border-radius:var(--radius);
+  padding:16px;transition:transform .18s,box-shadow .18s,border-color .18s;
+  display:flex;flex-direction:column;gap:8px;
+}
+.software-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-card);border-color:var(--border-hover)}
+.software-card .s-head{display:flex;align-items:flex-start;gap:10px}
+.software-card .s-icon{
+  width:40px;height:40px;border-radius:9px;
+  background:var(--brand-light);display:grid;place-items:center;
+  font-size:20px;flex-shrink:0;overflow:hidden;
+  color:var(--brand);
+}
+.software-card .s-icon img{width:24px;height:24px;object-fit:contain;display:block}
+.software-card .s-name{font-size:15px;font-weight:620;color:var(--text);letter-spacing:-.1px}
+.software-card .s-ver{font-size:12px;color:var(--text-3);font-weight:400}
+.software-card .s-desc{font-size:13px;color:var(--text-2);line-height:1.55;flex:1}
+.software-card .s-tags{display:flex;flex-wrap:wrap;gap:4px}
+.software-card .s-tags span{
+  font-size:11px;padding:2px 7px;border-radius:5px;
+  background:var(--bg-soft);color:var(--text-3);border:1px solid var(--border-light);
+}
+.software-card .s-actions{display:flex;gap:6px;margin-top:auto}
+.s-btn{
+  flex:1;text-align:center;padding:7px 10px;border-radius:7px;font-size:12.5px;
+  font-weight:600;transition:.15s;display:flex;align-items:center;justify-content:center;gap:4px;
+}
+.s-btn.dl{
+  background:var(--brand);color:#fff;
+}
+.s-btn.dl:hover{background:var(--brand-2);transform:translateY(-1px)}
+.s-btn.official{
+  background:var(--bg-soft);color:var(--text-2);border:1px solid var(--border);
+}
+.s-btn.official:hover{border-color:var(--brand);color:var(--brand)}
+
+/* 空状态 */
+.empty-state{text-align:center;padding:60px 20px;color:var(--text-3);grid-column:1/-1}
+.empty-state .big{font-size:42px;margin-bottom:10px}
+.empty-state p{font-size:14px}
+
+/* ============ 免责提示 ============ */
+.disclaimer{
+  margin-top:24px;padding:14px 16px;
+  background:var(--bg-soft);border:1px solid var(--border-light);border-radius:var(--radius-sm);
+  font-size:12px;color:var(--text-3);line-height:1.6;
+}
+.disclaimer strong{color:var(--text-2)}
+
+/* ============ 页脚 ============ */
+footer{border-top:1px solid var(--border-light);padding:22px 0 30px;color:var(--text-3);font-size:12.5px}
+footer .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+footer a:hover{color:var(--brand)}
+footer .right{margin-left:auto;display:flex;gap:14px}
+</style>
+</head>
+<body>
+
+<!-- ============ 导航 ============ -->
+<nav class="nav">
+  <a class="logo" href="../index.html">
+    <span class="mark">V</span>
+    <span>Vibe<b>Hub</b></span>
+    <span class="sub">软件库</span>
+  </a>
+  <div class="menu">
+    <a href="../index.html">术语</a>
+    <a href="../index.html#practice">练习</a>
+    <a href="../index.html#anti">防止 AI 味儿</a>
+    <a href="../index.html#skill">Skill</a>
+    <a href="../index.html#group">交流群</a>
+    <a href="../1/index.html">课程</a>
+    <a href="index.html" class="active">软件库</a>
+  </div>
+  <div class="spacer"></div>
+  <a class="home-link" href="../index.html">← 返回术语图鉴</a>
+  <button class="icon-btn" id="themeBtn" title="切换主题"><svg class="ic i-moon"><use href="icons/ui.svg#i-moon"/></svg><svg class="ic i-sun" hidden><use href="icons/ui.svg#i-sun"/></svg></button>
+</nav>
+
+<!-- ============ 主体 ============ -->
+<div class="main-wrap">
+
+<!-- 侧边栏 -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-search">
+    <span style="color:var(--text-3);font-size:13px">⌕</span>
+    <input type="text" id="sideSearch" placeholder="搜索分类…">
+  </div>
+  <div class="cat-title">软件分类</div>
+</aside>
+
+<!-- 内容区 -->
+<main class="content">
+  <div class="content-header">
+    <h2 id="catTitle">全部软件</h2>
+    <div class="info">共 <span id="totalCount">0</span> 款软件 · 绿色按钮=本地安装包（链接待填） · 灰色按钮=前往官网下载页</div>
+  </div>
+  <div class="search-bar">
+    <input type="text" id="mainSearch" placeholder="搜索软件名称或描述…">
+  </div>
+  <div class="software-grid" id="softwareGrid"></div>
+  <div class="disclaimer">
+    <strong><svg class="ic" style="width:15px;height:15px;vertical-align:-2px"><use href="icons/ui.svg#i-download"/></svg> 下载说明：</strong>绿色按钮可<strong>直接下载安装包</strong>（下载链接待补充）。灰色按钮跳转到软件<strong>官网下载页</strong>（暂无本地安装包）。本软件库优先收录<strong>免费/开源软件</strong>。
+  </div>
+</main>
+
+</div>
+
+<!-- 页脚 -->
+<footer>
+  <div class="wrap">
+    <span>VibeHub · 软件库</span>
+    <div class="right">
+      <a href="../index.html">返回术语图鉴</a>
+      <span>© 2026</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ===========================================================
+   主题切换
+   =========================================================== */
+const html = document.documentElement;
+const themeBtn = document.getElementById('themeBtn');
+const saved = localStorage.getItem('vh_theme');
+function paintTheme() {
+  const dark = html.dataset.theme === 'dark';
+  const moon = themeBtn.querySelector('.i-moon');
+  const sun = themeBtn.querySelector('.i-sun');
+  if (moon) moon.hidden = dark;
+  if (sun) sun.hidden = !dark;
+}
+if (saved === 'dark') html.dataset.theme = 'dark';
+paintTheme();
+
+themeBtn.addEventListener('click', () => {
+  const next = html.dataset.theme === 'dark' ? 'light' : 'dark';
+  html.dataset.theme = next;
+  localStorage.setItem('vh_theme', next);
+  paintTheme();
+});
+
+/* ===========================================================
+   软件数据 —— 安装包来源：C:\Users\lenovo\Desktop\安装包
+   有 file 字段 = 本地安装包可下载（链接待填）
+   无 file 字段 = 仅提供官网链接
+   =========================================================== */
+const SOFTWARE = [
+  // ===== 压缩工具 =====
+  { name:"7-Zip", icon:"7zip.svg", ver:"最新", cat:"compress",
+    desc:"开源压缩解压工具，支持 7z/ZIP/RAR 等格式，压缩率极高。",
+    tags:["压缩","解压","轻量"], official:"https://pan.quark.cn/s/acdcd9d0fe1c", file:""},
+  { name:"WinRAR", icon:"winrar.svg", ver:"最新", cat:"compress",
+    desc:"老牌压缩解压工具，支持 RAR/ZIP/7Z 等格式。",
+    tags:["压缩","解压","Windows"], official:"https://pan.quark.cn/s/cf7b0d4f4ee4", file:""},
+
+  // ===== 远程控制 =====
+  { name:"AweSun", icon:"awesun.svg", ver:"最新", cat:"remote",
+    desc:"免费远程桌面控制软件，支持多设备连接。",
+    tags:["远程控制","远程桌面","跨平台"], official:"https://pan.quark.cn/s/58b0d6fcb760", file:""},
+  { name:"ToDesk", icon:"todesk.svg", ver:"最新", cat:"remote",
+    desc:"国产免费远程控制工具，速度快延迟低。",
+    tags:["远程控制","低延迟","跨平台"], official:"https://pan.quark.cn/s/5cd39e614eba", file:""},
+  { name:"UU远程", icon:"uu.svg", ver:"最新", cat:"remote",
+    desc:"网易出品免费远程控制工具，游戏场景优化。",
+    tags:["远程控制","低延迟","Windows"], official:"https://pan.quark.cn/s/4894ac88ea7d", file:""},
+
+  // ===== 开发工具 =====
+  { name:"Visual Studio Code", icon:"visualstudiocode.svg", ver:"最新", cat:"dev",
+    desc:"微软出品的免费代码编辑器，支持海量插件，前端/后端开发首选。",
+    tags:["编辑器","IDE","跨平台"], official:"https://pan.quark.cn/s/3f563002306e", file:""},
+  { name:"Cursor", icon:"cursor.svg", ver:"最新", cat:"dev",
+    desc:"基于 VS Code 的 AI 编程编辑器，内置 GPT/Claude 助手。",
+    tags:["AI编辑器","IDE","付费可选"], official:"https://pan.quark.cn/s/66d3a2cb6185", file:""},
+  { name:"JetBrains Fleet", icon:"jetbrains.svg", ver:"Public Preview", cat:"dev",
+    desc:"JetBrains 出品的轻量级多语言编辑器，免费公测中。",
+    tags:["编辑器","多语言","JetBrains"], official:"https://www.jetbrains.com/fleet/"},
+  { name:"Notepad++", icon:"notepadplusplus.svg", ver:"最新", cat:"dev",
+    desc:"Windows 平台经典文本编辑器，支持语法高亮和宏录制。",
+    tags:["文本编辑器","Windows","轻量"], official:"https://pan.quark.cn/s/044eb042aaad", file:""},
+  { name:"IntelliJ IDEA", icon:"intellijidea.svg", ver:"2023.2", cat:"dev",
+    desc:"JetBrains 出品 Java/Kotlin 旗舰 IDE，社区版免费。",
+    tags:["IDE","Java","社区版"], official:"https://pan.quark.cn/s/61ec8f58cdc5", file:""},
+  { name:"PyCharm", icon:"pycharm.svg", ver:"2023.2", cat:"dev",
+    desc:"JetBrains 出品 Python 专业 IDE，社区版免费。",
+    tags:["IDE","Python","社区版"], official:"https://pan.quark.cn/s/4460e557c7fb", file:""},
+  { name:"Anaconda", icon:"anaconda.svg", ver:"2023", cat:"dev",
+    desc:"Python 数据科学发行版，预装 conda + 200+ 常用包。",
+    tags:["Python","数据科学","环境管理"], official:"https://pan.quark.cn/s/a40c36d92a43", file:""},
+  { name:"Git", icon:"git.svg", ver:"最新", cat:"dev",
+    desc:"分布式版本控制系统，软件开发必备。",
+    tags:["版本控制","命令行","跨平台"], official:"https://pan.quark.cn/s/c5ad0ae4cd2e"},
+  { name:"DBeaver", icon:"dbeaver.svg", ver:"Community", cat:"dev",
+    desc:"通用数据库管理工具，支持 MySQL/PostgreSQL/SQLite 等几乎所有数据库。",
+    tags:["数据库","SQL","跨平台"], official:"https://pan.quark.cn/s/c03b403a55a0", file:""},
+  { name:"DevToys", icon:"devtoys.svg", ver:"最新", cat:"dev",
+    desc:"开发者瑞士军刀——JSON 格式化、Base64 编解码、正则测试等 30+ 工具。",
+    tags:["工具箱","Windows","离线"], official:"https://github.com/DevToys-app/DevToys"},
+  { name:"MongoDB Compass", icon:"mongodb.svg", ver:"Community", cat:"dev",
+    desc:"MongoDB 官方 GUI 客户端，可视化查询和数据分析。",
+    tags:["数据库","NoSQL","GUI"], official:"https://www.mongodb.com/products/compass"},
+
+  // ===== 平面设计 =====
+  { name:"GIMP", icon:"gimp.svg", ver:"最新", cat:"design",
+    desc:"开源 Photoshop 替代品，支持图层、滤镜、插件扩展。",
+    tags:["图像编辑","图层","跨平台"], official:"https://www.gimp.org/", file:""},
+  { name:"Inkscape", icon:"inkscape.svg", ver:"最新", cat:"design",
+    desc:"开源矢量图形编辑器，对标 Illustrator，支持 SVG 原生编辑。",
+    tags:["矢量图","SVG","跨平台"], official:"https://inkscape.org/"},
+  { name:"Krita", icon:"krita.svg", ver:"最新", cat:"design",
+    desc:"专业级开源绘画软件，漫画家和插画师的首选。",
+    tags:["绘画","数位板","动画"], official:"https://krita.org/"},
+  { name:"darktable", icon:"darktable.svg", ver:"最新", cat:"design",
+    desc:"开源 Lightroom 替代品，RAW 照片处理和调色。",
+    tags:["摄影","RAW","调色"], official:"https://www.darktable.org/"},
+
+  // ===== 三维设计 =====
+  { name:"Blender", icon:"blender.svg", ver:"最新", cat:"3d",
+    desc:"全能开源 3D 创作套件——建模、雕刻、动画、渲染、视频编辑一体化。",
+    tags:["3D","动画","渲染"], official:"https://www.blender.org/"},
+  { name:"FreeCAD", icon:"freecad.svg", ver:"最新", cat:"3d",
+    desc:"开源参数化 3D CAD 建模软件，适合工程设计和 3D 打印。",
+    tags:["CAD","参数化","工程"], official:"https://www.freecad.org/"},
+  { name:"Wings 3D", icon:"wings3d.svg", ver:"最新", cat:"3d",
+    desc:"轻量级开源 3D 建模工具，多边形细分建模，上手简单。",
+    tags:["3D建模","轻量","多边形"], official:"https://www.wings3d.com/"},
+
+  // ===== 办公笔记 =====
+  { name:"LibreOffice", icon:"libreoffice.svg", ver:"最新", cat:"office",
+    desc:"最流行的开源办公套件——Writer/Calc/Impress 对标 Word/Excel/PPT。",
+    tags:["办公套件","ODF","跨平台"], official:"https://www.libreoffice.org/"},
+  { name:"OnlyOffice", icon:"onlyoffice.svg", ver:"Community", cat:"office",
+    desc:"高兼容性办公套件，与 Microsoft Office 格式兼容性极好。",
+    tags:["办公套件","MS兼容","协作"], official:"https://www.onlyoffice.com/"},
+  { name:"Obsidian", icon:"obsidian.svg", ver:"最新", cat:"office",
+    desc:"基于本地 Markdown 的知识库/笔记应用，插件生态极丰富。",
+    tags:["笔记","Markdown","知识库"], official:"https://obsidian.md/"},
+  { name:"Logseq", icon:"logseq.svg", ver:"最新", cat:"office",
+    desc:"开源大纲式笔记 + 知识图谱工具，双向链接、块引用。",
+    tags:["笔记","大纲","知识图谱"], official:"https://logseq.com/"},
+  { name:"Calibre", icon:"calibre.svg", ver:"最新", cat:"office",
+    desc:"电子书管理神器——格式转换、元数据编辑、推送 Kindle。",
+    tags:["电子书","格式转换","管理"], official:"https://calibre-ebook.com/", file:""},
+  { name:"draw.io", icon:"drawio.svg", ver:"桌面版", cat:"office",
+    desc:"开源绘图工具——流程图、UML、架构图，支持离线桌面版。",
+    tags:["绘图","流程图","UML"], official:"https://github.com/jgraph/drawio-desktop"},
+
+  // ===== 系统工具 =====
+  { name:"Everything", icon:"everything.png", ver:"最新", cat:"system",
+    desc:"Windows 瞬时文件搜索工具，比系统自带快 100 倍。",
+    tags:["搜索","Windows","极速"], official:"https://pan.quark.cn/s/9ed5e9cee3d1", file:""},
+  { name:"CPU-Z", icon:"cpuz.svg", ver:"最新", cat:"system",
+    desc:"免费硬件检测工具，查看 CPU/内存/主板/显卡详细信息。",
+    tags:["硬件检测","诊断","轻量"], official:"https://pan.quark.cn/s/c71b23d3eb66", file:""},
+  { name:"CC-Switch", icon:"ccswitch.svg", ver:"最新", cat:"system",
+    desc:"Windows 系统管理和设置快速切换工具。",
+    tags:["系统管理","设置","Windows"], official:"https://pan.quark.cn/s/cf70c4508b6c", file:""},
+  { name:"Rufus", icon:"rufus.png", ver:"最新", cat:"system",
+    desc:"启动 U 盘制作工具，装系统必备，速度快体积小。",
+    tags:["USB启动","系统安装","Windows"], official:"https://rufus.ie/"},
+  { name:"Dism++", icon:"dism.svg", ver:"最新", cat:"system",
+    desc:"Windows 系统优化/清理/备份工具，基于 DISM 技术。",
+    tags:["系统优化","清理","备份"], official:"https://github.com/Chuyu-Team/Dism-Multi-language"},
+  { name:"VeraCrypt", icon:"veracrypt.svg", ver:"最新", cat:"system",
+    desc:"开源磁盘加密工具，TrueCrypt 继承者，支持全盘加密和隐藏卷。",
+    tags:["加密","安全","跨平台"], official:"https://www.veracrypt.fr/"},
+
+  // ===== 多媒体 =====
+  { name:"VLC Media Player", icon:"vlc.svg", ver:"最新", cat:"media",
+    desc:"万能播放器，什么格式都能播，无需安装额外解码器。",
+    tags:["播放器","全格式","跨平台"], official:"https://pan.quark.cn/s/46afde7c000a"},
+  { name:"OBS Studio", icon:"obsstudio.svg", ver:"最新", cat:"media",
+    desc:"开源直播/录屏软件，支持多场景切换、滤镜、虚拟摄像头。",
+    tags:["直播","录屏","推流"], official:"https://pan.quark.cn/s/35500ebdadc6" },
+  { name:"Audacity", icon:"audacity.svg", ver:"最新", cat:"media",
+    desc:"开源音频编辑软件，录音、剪辑、降噪、多轨混音。",
+    tags:["音频编辑","录音","混音"], official:"https://www.audacityteam.org/"},
+  { name:"HandBrake", icon:"handbrake.svg", ver:"最新", cat:"media",
+    desc:"开源视频转码工具，支持几乎所有格式互转，预设丰富。",
+    tags:["视频转码","压缩","格式转换"], official:"https://handbrake.fr/"},
+  { name:"Shotcut", icon:"shotcut.svg", ver:"最新", cat:"media",
+    desc:"开源视频剪辑软件，支持宽色域和时间线编辑。",
+    tags:["视频剪辑","跨平台","时间线"], official:"https://shotcut.org/"},
+  { name:"Kdenlive", icon:"kdenlive.svg", ver:"最新", cat:"media",
+    desc:"Linux/Windows 开源视频编辑器，功能接近 Premiere 基础版。",
+    tags:["视频剪辑","专业","多轨"], official:"https://kdenlive.org/"},
+
+  // ===== 浏览器 =====
+  { name:"Firefox", icon:"firefox.svg", ver:"最新", cat:"browser",
+    desc:"Mozilla 出品，隐私保护最好，扩展生态丰富。",
+    tags:["浏览器","隐私","开源"], official:"https://pan.quark.cn/s/a2d69521d8a4", file:""},
+  { name:"Brave", icon:"brave.svg", ver:"最新", cat:"browser",
+    desc:"内置广告拦截 + Tor 隐私模式 + Brave Rewards 加密奖励。",
+    tags:["浏览器","隐私","广告拦截"], official:"https://brave.com/"},
+  { name:"Tor Browser", icon:"torbrowser.svg", ver:"最新", cat:"browser",
+    desc:"基于 Firefox 的匿名浏览器，通过 Tor 网络保护隐私。",
+    tags:["浏览器","匿名","隐私"], official:"https://www.torproject.org/"},
+
+  // ===== AI 相关 =====
+  { name:"Ollama", icon:"ollama.svg", ver:"最新", cat:"ai",
+    desc:"本地大模型运行工具——一键部署 Llama/Mistral/Qwen/DeepSeek 等。",
+    tags:["LLM","本地部署","开源模型"], official:"https://ollama.com/"},
+  { name:"LM Studio", icon:"lmstudio.svg", ver:"最新", cat:"ai",
+    desc:"图形化本地大模型运行工具，支持 HuggingFace 模型下载和聊天。",
+    tags:["LLM","GUI","本地"], official:"https://lmstudio.ai/"},
+  { name:"Jan", icon:"jan.svg", ver:"最新", cat:"ai",
+    desc:"开源本地 AI 聊天客户端，支持多种模型后端，离线可用。",
+    tags:["AI客户端","本地","开源"], official:"https://jan.ai/"},
+  { name:"Stable Diffusion WebUI", icon:"sdwebui.svg", ver:"Automatic1111", cat:"ai",
+    desc:"Stable Diffusion 最流行的图形界面，文生图/图生图/ControlNet。",
+    tags:["AI绘图","SD","图像生成"], official:"https://github.com/AUTOMATIC1111/stable-diffusion-webui"},
+  { name:"ComfyUI", icon:"comfyui.svg", ver:"最新", cat:"ai",
+    desc:"节点式 Stable Diffusion 工作流引擎，比 WebUI 更灵活高效。",
+    tags:["AI绘图","节点","工作流"], official:"https://github.com/comfyanonymous/ComfyUI"},
+  { name:"NextChat (ChatGPT-Next-Web)", icon:"nextchat.svg", ver:"最新", cat:"ai",
+    desc:"一键部署私有 ChatGPT 网页客户端，支持多家 API。",
+    tags:["AI客户端","Web","多模型"], official:"https://github.com/ChatGPTNextWeb/NextChat"},
+
+  // ===== 效率工具 =====
+  { name:"qBittorrent", icon:"qbitTorrent.svg", ver:"最新", cat:"productivity",
+    desc:"开源 BT/磁力下载工具，无广告、无捆绑，支持 RSS 订阅。",
+    tags:["下载","BT","开源"], official:"https://www.qbittorrent.org/", file:""},
+  { name:"WorkBuddy", icon:"workbuddy.svg", ver:"最新", cat:"productivity",
+    desc:"团队协作与效率管理工具。",
+    tags:["协作","效率","Windows"], official:"https://pan.quark.cn/s/855515a37581", file:""},
+  { name:"KeePassXC", icon:"keepassxc.svg", ver:"最新", cat:"productivity",
+    desc:"开源密码管理器，本地存储，支持浏览器自动填充。",
+    tags:["密码管理","安全","跨平台"], official:"https://keepassxc.org/"},
+  { name:"Bitwarden", icon:"bitwarden.svg", ver:"免费版", cat:"productivity",
+    desc:"开源密码管理器，云端同步 + 自托管选项，全平台可用。",
+    tags:["密码管理","云同步","开源"], official:"https://bitwarden.com/"},
+  { name:"ShareX", icon:"sharex.svg", ver:"最新", cat:"productivity",
+    desc:"Windows 截图/录屏/OCR/文件分享一体化工具，功能超全。",
+    tags:["截图","录屏","OCR"], official:"https://getsharex.com/"},
+  { name:"Syncthing", icon:"syncthing.svg", ver:"最新", cat:"productivity",
+    desc:"开源 P2P 文件同步工具，无中心服务器，设备间直连同步。",
+    tags:["同步","P2P","跨平台"], official:"https://syncthing.net/"},
+
+  // ===== 虚拟机 =====
+  { name:"VirtualBox", icon:"virtualbox.svg", ver:"最新", cat:"vm",
+    desc:"Oracle 出品免费虚拟机软件，支持 Windows/Linux/macOS 虚拟机。",
+    tags:["虚拟机","跨平台","免费"], official:"https://www.virtualbox.org/", file:""},
+  { name:"VMware Workstation", icon:"vmware.svg", ver:"最新", cat:"vm",
+    desc:"专业级虚拟机软件，支持 Windows/Linux/macOS 虚拟化。",
+    tags:["虚拟机","虚拟化","专业"], official:"https://pan.quark.cn/s/c64cdf70de5d", file:""},
+  { name:"Ubuntu", icon:"ubuntu.svg", ver:"22.04 LTS", cat:"vm",
+    desc:"最流行的 Linux 发行版桌面镜像。",
+    tags:["Linux","Ubuntu","开源"], official:"https://pan.quark.cn/s/84a1be8ac6f6", file:""},
+
+  // ===== 开发环境 =====
+  { name:"Docker Desktop", icon:"docker.svg", ver:"Personal", cat:"devops",
+    desc:"容器化开发和部署平台，个人版免费。",
+    tags:["容器","Docker","开发"], official:"https://www.docker.com/products/docker-desktop/"},
+  { name:"Wireshark", icon:"wireshark.svg", ver:"最新", cat:"devops",
+    desc:"开源网络协议分析器，抓包/分析网络流量。",
+    tags:["网络","抓包","分析"], official:"https://www.wireshark.org/"},
+  { name:"Tabby", icon:"tabby.svg", ver:"最新", cat:"devops",
+    desc:"开源终端模拟器 + SSH 客户端，支持分屏和主题定制。",
+    tags:["终端","SSH","分屏"], official:"https://tabby.sh/"},
+];
+
+/* ===========================================================
+   分类定义
+   =========================================================== */
+const CATEGORIES = [
+  { id:"all",        label:"全部软件", icon:"cat-all.svg" },
+  { id:"compress",   label:"压缩工具", icon:"cat-compress.svg" },
+  { id:"remote",     label:"远程控制", icon:"cat-remote.svg" },
+  { id:"dev",        label:"开发工具", icon:"cat-dev.svg" },
+  { id:"design",     label:"平面设计", icon:"cat-design.svg" },
+  { id:"3d",         label:"三维设计", icon:"cat-3d.svg" },
+  { id:"office",     label:"办公笔记", icon:"cat-office.svg" },
+  { id:"system",     label:"系统工具", icon:"cat-system.svg" },
+  { id:"media",      label:"多媒体",   icon:"cat-media.svg" },
+  { id:"browser",    label:"浏览器",   icon:"cat-browser.svg" },
+  { id:"ai",         label:"AI 相关",  icon:"cat-ai.svg" },
+  { id:"productivity",label:"效率工具",icon:"cat-productivity.svg" },
+  { id:"vm",         label:"虚拟机",   icon:"cat-vm.svg" },
+  { id:"devops",     label:"开发环境", icon:"cat-devops.svg" },
+];
+
+/* ===========================================================
+   状态
+   =========================================================== */
+let activeCat = "all";
+let searchTerm = "";
+
+/* ===========================================================
+   iconHtml：把图标文件名渲染为 <img>（svg/png 统一）
+   =========================================================== */
+function iconHtml(f) {
+  if (!f) return '';
+  return `<img src="icons/${f}" alt="" loading="lazy">`;
+}
+
+/* ===========================================================
+   渲染侧边栏
+   =========================================================== */
+function renderSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  // 保留搜索框
+  const searchBox = document.getElementById('sideSearch').parentElement;
+  sidebar.innerHTML = '';
+  sidebar.appendChild(searchBox);
+
+  // 分类标题
+  const title = document.createElement('div');
+  title.className = 'cat-title';
+  title.textContent = '软件分类';
+  sidebar.appendChild(title);
+
+  CATEGORIES.forEach(cat => {
+    const item = document.createElement('div');
+    item.className = 'cat-item' + (cat.id === activeCat ? ' active' : '');
+    item.innerHTML = `
+      <span class="icon">${iconHtml(cat.icon)}</span>
+      <span>${cat.label}</span>
+      <span class="count">${countByCat(cat.id)}</span>
+    `;
+    item.addEventListener('click', () => {
+      activeCat = cat.id;
+      document.getElementById('catTitle').textContent = cat.label;
+      renderSidebar();
+      renderSoftware();
+      // 移动端滚动内容区到顶部
+      document.querySelector('.content').scrollIntoView({behavior:'smooth'});
+    });
+    sidebar.appendChild(item);
+  });
+}
+
+function countByCat(catId) {
+  if (catId === 'all') return SOFTWARE.length;
+  return SOFTWARE.filter(s => s.cat === catId).length;
+}
+
+/* ===========================================================
+   渲染软件卡片
+   —— 'file' in s → 有本地安装包，只显示下载按钮（链接待填）
+   —— 无 file 字段 → 仅显示官网链接
+   =========================================================== */
+function renderSoftware() {
+  const grid = document.getElementById('softwareGrid');
+  const term = searchTerm.toLowerCase().trim();
+
+  let filtered = SOFTWARE;
+  if (activeCat !== 'all') filtered = filtered.filter(s => s.cat === activeCat);
+  if (term) {
+    filtered = filtered.filter(s =>
+      s.name.toLowerCase().includes(term) ||
+      s.desc.toLowerCase().includes(term) ||
+      s.tags.some(t => t.toLowerCase().includes(term)) ||
+      s.cat.toLowerCase().includes(term)
+    );
+  }
+
+  document.getElementById('totalCount').textContent = filtered.length;
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <div class="big"><svg class="ic" style="width:42px;height:42px"><use href="icons/ui.svg#i-search"/></svg></div>
+        <p>没有找到匹配的软件</p>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(s => {
+    if (s.file) {
+      // 有本地安装包 → 下载按钮
+      return `
+        <div class="software-card">
+          <div class="s-head">
+            <div class="s-icon">${iconHtml(s.icon)}</div>
+            <div>
+              <div class="s-name">${s.name} <span class="s-ver">${s.ver}</span></div>
+            </div>
+          </div>
+          <div class="s-desc">${s.desc}</div>
+          <div class="s-tags">${s.tags.map(t => `<span>${t}</span>`).join('')}</div>
+          <div class="s-actions">
+            <a href="${s.file}" class="s-btn dl" download>
+              <svg class="ic"><use href="icons/ui.svg#i-download"/></svg> 下载安装包
+            </a>
+          </div>
+        </div>`;
+    } else {
+      // 无本地安装包 → 显示链接（官网或网盘等）
+      const href = s.official || '#';
+      return `
+        <div class="software-card">
+          <div class="s-head">
+            <div class="s-icon">${iconHtml(s.icon)}</div>
+            <div>
+              <div class="s-name">${s.name} <span class="s-ver">${s.ver}</span></div>
+            </div>
+          </div>
+          <div class="s-desc">${s.desc}</div>
+          <div class="s-tags">${s.tags.map(t => `<span>${t}</span>`).join('')}</div>
+          <div class="s-actions">
+            <a href="${href}" class="s-btn ${s.official ? 'official' : 'dl'}" target="_blank" rel="noopener">
+              ${s.official ? '<svg class="ic"><use href="icons/ui.svg#i-globe"/></svg> 前往下载页' : '<svg class="ic"><use href="icons/ui.svg#i-download"/></svg> 下载安装包'}
+            </a>
+          </div>
+        </div>`;
+      }
+  }).join('');
+}
+
+/* ===========================================================
+   搜索（防抖）
+   =========================================================== */
+let debounceTimer;
+function onSearch(val) {
+  searchTerm = val;
+  clearTimeout(debounceTimer);
+  debounceTimer = setTimeout(renderSoftware, 200);
+}
+
+document.getElementById('mainSearch').addEventListener('input', e => onSearch(e.target.value));
+document.getElementById('sideSearch').addEventListener('input', e => onSearch(e.target.value));
+
+/* ===========================================================
+   键盘快捷键 Ctrl+K 聚焦搜索
+   =========================================================== */
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+    e.preventDefault();
+    document.getElementById('mainSearch').focus();
+  }
+});
+
+/* ===========================================================
+   初始化
+   =========================================================== */
+renderSidebar();
+renderSoftware();
+</script>
+</body>
+</html>

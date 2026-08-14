@@ -1,0 +1,130 @@
+/* ============================================================================
+   VibeHub 课程站共享样式 · 1/lesson.css
+   统一视觉世界：The Card Catalog（卡片图鉴）
+   需在共享 ../style.css 之后引入（依赖其设计令牌与明暗主题）
+   引用：../style.css + lesson.css
+   ========================================================================== */
+
+/* ---------- 页面骨架 ---------- */
+.lesson-page { min-height: 100vh; padding: 2rem 0; }
+.lesson-wrap, .container { max-width: 750px; margin: 0 auto; padding: 0 24px; }
+@media (max-width: 760px) { .lesson-page { padding: 1.25rem 0; } .lesson-wrap, .container { padding: 0 16px; } }
+
+/* ---------- 面包屑 ---------- */
+.breadcrumb {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
+  color: var(--text-3); font-size: 13.5px; margin-bottom: 24px;
+}
+.breadcrumb a { color: var(--brand); text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+
+/* ---------- 页头 ---------- */
+.lesson-head h1, h1 {
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  font-weight: 750; letter-spacing: -.02em; line-height: 1.25;
+  margin-bottom: 8px;
+}
+.lesson-head .subtitle, .subtitle { color: var(--text-2); font-size: 15px; margin-bottom: 28px; }
+
+/* ---------- 教学卡片 ---------- */
+.card, .lesson-card-box {
+  background: var(--bg); border: 1px solid var(--border-light); border-radius: var(--radius-lg);
+  padding: 28px; margin-bottom: 24px; box-shadow: var(--shadow-card);
+}
+.card h2, .lesson-card-box h2 {
+  font-size: 20px; font-weight: 700; margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+.card p, .lesson-card-box p { color: var(--text-2); line-height: 1.85; margin-bottom: 12px; font-size: 15px; }
+.card p strong, .lesson-card-box p strong { color: var(--text); font-weight: 650; }
+.card ul, .card ol, .lesson-card-box ul, .lesson-card-box ol { margin: 0 0 12px 1.2rem; color: var(--text-2); line-height: 1.8; }
+.card li, .lesson-card-box li { margin-bottom: 4px; }
+.card code, .lesson-card-box code {
+  font-family: var(--mono); font-size: 13px; background: var(--bg-demo);
+  padding: 2px 6px; border-radius: 5px; color: var(--text);
+}
+@media (max-width: 760px) { .card, .lesson-card-box { padding: 20px 18px; } }
+
+/* ---------- 强调块 ---------- */
+.highlight {
+  background: var(--brand-light); border-left: 3px solid var(--brand);
+  padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0;
+  color: var(--text-2); line-height: 1.75; font-size: 14.5px;
+}
+.highlight strong { color: var(--brand); }
+
+/* ---------- 对比块 ---------- */
+.comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+@media (max-width: 640px) { .comparison { grid-template-columns: 1fr; } }
+.comparison > div {
+  padding: 16px 18px; border-radius: var(--radius); font-size: 14px; line-height: 1.7;
+}
+.comparison h4 { margin-bottom: 8px; font-weight: 650; }
+.col-good { background: color-mix(in srgb, #16a34a 8%, var(--bg)); border: 1px solid color-mix(in srgb, #16a34a 30%, var(--border)); }
+.col-good h4 { color: #16a34a; }
+.col-bad { background: color-mix(in srgb, #e5484d 8%, var(--bg)); border: 1px solid color-mix(in srgb, #e5484d 30%, var(--border)); }
+.col-bad h4 { color: #e5484d; }
+
+/* ---------- 下一课 ---------- */
+.next-link {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  text-align: center; margin-top: 8px; padding: 16px;
+  background: var(--brand); color: #fff; text-decoration: none;
+  border-radius: var(--radius); font-size: 16px; font-weight: 600;
+  transition: background .15s, transform .15s;
+}
+.next-link:hover { background: var(--brand-2); transform: translateY(-2px); }
+.next-link:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--brand-light); }
+
+/* ---------- SVG 图标引用规范 ---------- */
+.ic {
+  width: 1em; height: 1em;
+  display: inline-block;
+  vertical-align: -0.15em;
+  flex-shrink: 0;
+}
+.ic-lg { width: 1.6em; height: 1.6em; vertical-align: -0.3em; }
+.ic-2x { width: 2em; height: 2em; vertical-align: -0.4em; }
+/* demo 步骤容器（原 .emoji div）保持居中布局 */
+.emoji { display: grid; place-items: center; }
+.emoji .ic { width: 2.5rem; height: 2.5rem; }
+
+/* 概念序号（原 1️⃣2️⃣3️⃣） */
+.num {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 1.5em; height: 1.5em; padding: 0 .3em;
+  background: var(--brand-light); color: var(--brand);
+  border-radius: 6px; font-weight: 700; font-size: .85em;
+  margin-right: .25em;
+}
+
+/* ---------- 课程首页：地图 / 层级 ---------- */
+.map { display: flex; flex-direction: column; gap: 24px; margin-bottom: 32px; }
+.lesson-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; }
+.lesson-card {
+  background: var(--bg); border: 1px solid var(--border-light); border-radius: var(--radius);
+  padding: 20px; cursor: pointer; transition: transform .15s, box-shadow .15s, border-color .15s;
+  text-decoration: none; color: inherit; display: block; box-shadow: var(--shadow-card);
+}
+.lesson-card:hover {
+  border-color: var(--border-hover); transform: translateY(-2px); box-shadow: var(--shadow-float);
+}
+.lesson-card .icon { font-size: 28px; margin-bottom: 8px; display: flex; align-items: center; }
+.lesson-card .icon .ic { width: 1.6em; height: 1.6em; vertical-align: baseline; }
+.lesson-card .tag { display: inline-flex; align-items: center; gap: 4px; }
+.lesson-card h3 { font-size: 16px; font-weight: 650; margin-bottom: 6px; }
+.lesson-card p { font-size: 13.5px; color: var(--text-2); line-height: 1.5; }
+.lesson-card .tag {
+  display: inline-block; padding: 3px 10px; border-radius: 99px;
+  font-size: 12px; margin-top: 12px; background: var(--bg-soft); color: var(--text-3);
+}
+.lesson-card.done { border-color: color-mix(in srgb, #16a34a 50%, var(--border)); }
+.lesson-card.done .tag { background: color-mix(in srgb, #16a34a 12%, transparent); color: #16a34a; }
+.lesson-card.locked { opacity: .4; pointer-events: none; }
+.legend { display: flex; gap: 24px; justify-content: center; margin-top: 8px; font-size: 13.5px; color: var(--text-3); }
+.legend span { display: flex; align-items: center; gap: 6px; }
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+.dot.green { background: #4ade80; }
+.dot.yellow { background: #facc15; }
+.dot.orange { background: #fb923c; }
+.dot.red { background: #f87171; }

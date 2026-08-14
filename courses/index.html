@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Agent 从零开始 · 课程地图</title>
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="lesson.css">
+</head>
+<body class="lesson-page">
+<nav class="nav">
+  <a class="logo" href="../index.html">
+    <span class="mark">V</span><span>Vibe<b>Hub</b></span><span class="sub">课程</span>
+  </a>
+  <div class="menu">
+    <a href="../index.html">术语图鉴</a>
+    <a href="index.html" class="active">课程</a>
+    <a href="../software/index.html">软件库</a>
+  </div>
+  <div class="spacer"></div>
+  <button class="icon-btn" id="themeBtn" title="切换主题"><svg class="ic"><use href="icons.svg#i-moon"/></svg></button>
+</nav>
+<div class="lesson-wrap">
+  <div class="breadcrumb"><svg class="ic"><use href="icons.svg#i-book"/></svg> <a href="../index.html">VibeHub</a> → 课程地图</div>
+
+  <div class="lesson-head">
+    <h1><svg class="ic"><use href="icons.svg#i-brain"/></svg> AI Agent 从零开始</h1>
+    <p class="subtitle">每节课不超过 10 分钟 · 没有废话 · 全是比喻和动手</p>
+  </div>
+
+  <!-- ============ 第一层 ============ -->
+  <div class="map">
+    <div>
+      <span class="level-label level-1">LEVEL 1 · 认知层</span>
+      <span style="color:#94a3b8;font-size:0.85rem;margin-left:0.5rem">你现在在这</span>
+    </div>
+    <div class="lesson-grid">
+      <a href="lesson-1-ai.html" class="lesson-card">
+        <div class="icon"><svg class="ic"><use href="icons.svg#i-robot"/></svg></div>
+        <h3>第 1 课 · AI 到底是什么</h3>
+        <p>把大象塞进冰箱需要几步？用这个比喻搞懂 LLM</p>
+        <span class="tag"><svg class="ic"><use href="icons.svg#i-doc"/></svg> 比喻 + 互动图</span>
+      </a>
+      <a href="lesson-2-api.html" class="lesson-card">
+        <div class="icon"><svg class="ic"><use href="icons.svg#i-pizza"/></svg></div>
+        <h3>第 2 课 · 模型 vs API vs Key</h3>
+        <p>为什么你能在电脑上"用 DeepSeek"？厨房和外卖的故事</p>
+        <span class="tag"><svg class="ic"><use href="icons.svg#i-cook"/></svg> 厨房比喻</span>
+      </a>
+      <a href="lesson-3-token.html" class="lesson-card">
+        <div class="icon"><svg class="ic"><use href="icons.svg#i-coin"/></svg></div>
+        <h3>第 3 课 · Token 是什么</h3>
+        <p>AI 不认识"字"，它只认识 Token。你的每一分钱花在哪？</p>
+        <span class="tag"><svg class="ic"><use href="icons.svg#i-money"/></svg> 算给你看</span>
+      </a>
+      <a href="lesson-4-prompt.html" class="lesson-card">
+        <div class="icon"><svg class="ic"><use href="icons.svg#i-pencil"/></svg></div>
+        <h3>第 4 课 · Prompt 提示词</h3>
+        <p>你跟 AI 说话的方式，决定了它有多聪明</p>
+        <span class="tag"><svg class="ic"><use href="icons.svg#i-target"/></svg> 实战技巧</span>
+      </a>
+      <a href="lesson-5-context.html" class="lesson-card">
+        <div class="icon"><svg class="ic"><use href="icons.svg#i-brain"/></svg></div>
+        <h3>第 5 课 · 上下文窗口</h3>
+        <p>AI 的"短期记忆"有多大？为什么聊着聊着它就忘了？</p>
+        <span class="tag"><svg class="ic"><use href="icons.svg#i-window"/></svg> 记忆模型</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ============ 第二层 ============ -->
+  <div class="map">
+    <div><span class="level-label level-2">LEVEL 2 · 使用者层</span></div>
+    <div class="lesson-grid">
+      <a href="lesson-6-cline.html" class="lesson-card">
+        <div class="icon"><svg class="ic"><use href="icons.svg#i-wrench"/></svg></div>
+        <h3>第 6 课 · 用好 Cline</h3>
+        <p>让 AI 在你的 VS Code 里替你写代码</p>
+        <span class="tag"><svg class="ic"><use href="icons.svg#i-wrench"/></svg> 工具实战</span>
+      </a>
+      <a href="lesson-7-prompt-pro.html" class="lesson-card">
+        <div class="icon"><svg class="ic"><use href="icons.svg#i-clipboard"/></svg></div>
+        <h3>第 7 课 · 结构化 Prompt</h3>
+        <p>Few-Shot、思维链、强制格式——写出手术刀级提示词</p>
+        <span class="tag"><svg class="ic"><use href="icons.svg#i-target"/></svg> 进阶技巧</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ============ 第三层 ============ -->
+  <div class="map">
+    <div><span class="level-label level-3">LEVEL 3 · 搭建者层</span></div>
+    <div class="lesson-grid">
+      <a href="lesson-8-python-api.html" class="lesson-card">
+        <div class="icon"><svg class="ic"><use href="icons.svg#i-snake"/></svg></div>
+        <h3>第 8 课 · 用 Python 调 API</h3>
+        <p>15 行代码，直接跟 DeepSeek 对话</p>
+        <span class="tag"><svg class="ic"><use href="icons.svg#i-code"/></svg> 动手写代码</span>
+      </a>
+      <a href="lesson-9-tool-calling.html" class="lesson-card">
+        <div class="icon"><svg class="ic"><use href="icons.svg#i-wrench"/></svg></div>
+        <h3>第 9 课 · Tool Calling</h3>
+        <p>让 AI 学会"调用工具"——这是 Agent 的基础能力</p>
+        <span class="tag"><svg class="ic"><use href="icons.svg#i-wrench"/></svg> 核心机制</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ============ 第四层 ============ -->
+  <div class="map">
+    <div><span class="level-label level-4">LEVEL 4 · Agent 层</span></div>
+    <div class="lesson-grid">
+      <a href="lesson-10-agent-loop.html" class="lesson-card">
+        <div class="icon"><svg class="ic"><use href="icons.svg#i-bomb"/></svg></div>
+        <h3>第 10 课 · Agent 循环</h3>
+        <p>Think→Act→Observe——AI 自己干活的核心秘密</p>
+        <span class="tag"><svg class="ic"><use href="icons.svg#i-repeat"/></svg> 核心架构</span>
+      </a>
+      <a href="lesson-11-build-agent.html" class="lesson-card">
+        <div class="icon"><svg class="ic"><use href="icons.svg#i-rocket"/></svg></div>
+        <h3>第 11 课 · 造一个 Agent</h3>
+        <p>从零写出一个能自动整理文件的 AI Agent</p>
+        <span class="tag"><svg class="ic"><use href="icons.svg#i-trophy"/></svg> 实战项目</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span><span class="dot green"></span> 认知</span>
+    <span><span class="dot yellow"></span> 使用</span>
+    <span><span class="dot orange"></span> 搭建</span>
+    <span><span class="dot red"></span> Agent</span>
+  </div>
+
+</div>
+<footer class="footer"><div class="inner">
+  <span>© VibeHub · AI Agent 实战指南</span>
+  <div style="display:flex;gap:16px"><a href="../index.html">术语图鉴</a><a href="index.html">课程</a><a href="../software/index.html">软件库</a></div>
+</div></footer>
+<script src="lesson.js"></script>
+</body>
+</html>

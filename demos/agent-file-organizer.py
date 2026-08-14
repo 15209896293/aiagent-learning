@@ -15,7 +15,7 @@ Agent Demo: 文件整理 Agent
   2. python agent-file-organizer.py /path/to/folder
 
 示例：
-  python agent-file-organizer.py ./test-folder
+  python agent-file-organizer.py ./fixtures
 """
 
 import os
@@ -306,8 +306,8 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         target_dir = sys.argv[1]
     else:
-        # 默认用 test-folder
-        target_dir = os.path.join(os.path.dirname(__file__), "test-folder")
+        # 默认用 fixtures
+        target_dir = os.path.join(os.path.dirname(__file__), "fixtures")
         print(f"💡 未指定目录，使用默认: {target_dir}")
         print(f"💡 用法: python agent-file-organizer.py /path/to/folder")
 

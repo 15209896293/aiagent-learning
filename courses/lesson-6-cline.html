@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第 6 课 · 用好 Cline</title>
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="lesson.css">
+<style>
+  /* 本页专属演示组件（骨架已由 ../style.css + lesson.css 提供） */
+
+  .danger-box { background: #ef444410; border: 2px solid #ef4444; border-radius: 12px; padding: 1.25rem; margin: 1rem 0; }
+  .vs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+  .vs-grid > div { padding: 1rem; border-radius: 12px; font-size: 0.85rem; line-height: 1.7; }
+  .col-a { background: color-mix(in srgb, var(--brand-2) 13%, transparent); border: 1px solid color-mix(in srgb, var(--brand-2) 25%, transparent); }
+  .col-b { background: #a78bfa20; border: 1px solid #a78bfa40; }
+  .col-a h4 { color: var(--brand); margin-bottom: 0.5rem; }
+  .col-b h4 { color: #a78bfa; margin-bottom: 0.5rem; }
+  code { background: var(--bg-demo); padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.9em; }
+  .flow { display: flex; align-items: center; gap: 0.75rem; padding: 1.25rem; background: var(--bg-demo); border-radius: 12px; margin: 1rem 0; flex-wrap: wrap; justify-content: center; }
+  .flow-step { padding: 0.75rem 1rem; border-radius: 10px; text-align: center; font-size: 0.85rem; border: 1px solid var(--border); background: var(--bg-soft); }
+</style>
+</head>
+<body class="lesson-page">
+<nav class="nav">
+  <a class="logo" href="../index.html">
+    <span class="mark">V</span><span>Vibe<b>Hub</b></span><span class="sub">课程</span>
+  </a>
+  <div class="menu">
+    <a href="../index.html">术语图鉴</a>
+    <a href="index.html">课程</a>
+    <a href="../software/index.html">软件库</a>
+  </div>
+  <div class="spacer"></div>
+  <button class="icon-btn" id="themeBtn" title="切换主题"><svg class="ic i-moon"><use href="icons.svg#i-moon"/></svg><svg class="ic i-sun" hidden><use href="icons.svg#i-sun"/></svg></button>
+</nav>
+<div class="container">
+<div class="breadcrumb"><svg class="ic"><use href="icons.svg#i-home"/></svg> <a href="index.html">课程首页</a> → 第 6 课</div>
+<h1><svg class="ic"><use href="icons.svg#i-wrench"/></svg> 第 6 课 · 用好 Cline</h1>
+<p class="subtitle">让 AI 在你的编辑器里替你写代码——真正的"打工模式"</p>
+
+<div class="card">
+  <h2><svg class="ic"><use href="icons.svg#i-bulb"/></svg> Cline 到底是个什么东西？</h2>
+  <p>Cline 是 VS Code 的<strong>扩展插件</strong>。装完之后，你的编辑器左边多一个聊天窗口——你告诉它要做什么，它<strong>直接动手</strong>：</p>
+  <div class="flow">
+    <div class="flow-step"><svg class="ic"><use href="icons.svg#i-chat"/></svg> 你说"写个登录页"</div>
+    <span style="font-size:1.2rem">→</span>
+    <div class="flow-step"><svg class="ic"><use href="icons.svg#i-folder"/></svg> 它自动创建文件</div>
+    <span style="font-size:1.2rem">→</span>
+    <div class="flow-step"><svg class="ic"><use href="icons.svg#i-pencil"/></svg> 写 HTML+CSS+JS</div>
+    <span style="font-size:1.2rem">→</span>
+    <div class="flow-step"><svg class="ic"><use href="icons.svg#i-terminal"/></svg> 你实时看到结果</div>
+  </div>
+  <p style="font-size:0.85rem;color:var(--text-3);">跟 Claude Code CLI 做的事情一样，但你在编辑器里能看到整个过程。</p>
+</div>
+
+<div class="card">
+  <h2><svg class="ic"><use href="icons.svg#i-sword"/></svg> Cline vs Claude Code CLI · 什么时候用哪个？</h2>
+  <div class="vs-grid">
+    <div class="col-a"><h4><svg class="ic"><use href="icons.svg#i-wrench"/></svg> Cline（VS Code 扩展）</h4>
+      • 在编辑器里直接改代码<br>• 你能实时看到文件变化<br>• 适合日常开发、页面制作<br>• 有文件树，不会"丢了"<br>• 可以设 auto-approve（不弹窗）
+    </div>
+    <div class="col-b"><h4><svg class="ic"><use href="icons.svg#i-terminal"/></svg> Claude Code CLI（终端）</h4>
+      • 纯终端操作，功能更全<br>• 有 worktree 隔离环境<br>• 适合大规模重构、复杂操作<br>• 有 MEMORY.md 跨会话记忆<br>• 权限控制更精细
+    </div>
+  </div>
+  <div class="highlight"><strong>建议：</strong>日常开发用 Cline（你能看到代码），遇到复杂任务切到 CLI。两个工具读同一份项目文件，互不冲突。</div>
+</div>
+
+<div class="card">
+  <h2><svg class="ic"><use href="icons.svg#i-gear"/></svg> 核心设置：让 Cline 不弹窗</h2>
+  <p>你的痛点是"每次都弹窗确认"。Cline 可以设 <strong>Auto-Approve</strong>：</p>
+  <p><span class="num">1</span> 打开 Cline 设置（齿轮图标）</p>
+  <p><span class="num">2</span> 找到 "Auto-approve" 部分</p>
+  <p><span class="num">3</span> 勾选：读文件、写文件、执行命令（你信任的操作）</p>
+  <p><span class="num">4</span> 危险操作（删除、外部网络请求）保留手动确认</p>
+  <div class="highlight"><strong><svg class="ic"><use href="icons.svg#i-bulb"/></svg> 最佳实践：</strong>日常的文件读写放行，破坏性操作保留确认。既不被打断，也不失控。</div>
+</div>
+
+<div class="card">
+  <h2><svg class="ic"><use href="icons.svg#i-clipboard"/></svg> .clinerules — Cline 的项目规则文件</h2>
+  <p>在你的项目根目录下创建一个 <code>.clinerules</code> 文件，Cline 每次都会自动读取。就像 CLI 的 CLAUDE.md：</p>
+  <div class="highlight" style="font-family:monospace;font-size:0.85rem;line-height:1.8;">
+    <strong>示例 .clinerules：</strong><br>
+    技术栈：React + TypeScript + Tailwind<br>
+    命名规范：组件用 PascalCase，文件用 kebab-case<br>
+    不要引入超过 5 个 npm 包<br>
+    每次修改前先读相关文件<br>
+    改完代码后运行 npm run dev 验证
+  </div>
+</div>
+
+<div class="card">
+  <h2><svg class="ic"><use href="icons.svg#i-hand"/></svg> 现在动手</h2>
+  <p>1. 在 VS Code 里装 Cline 扩展（已经装了就跳过）</p>
+  <p>2. 配置 API Provider → DeepSeek → 填入你的 API Key</p>
+  <p>3. Model 选 <code>deepseek-chat</code>（或 v4-pro）</p>
+  <p>4. 打开 <code>F:\aiagent学习</code> 文件夹</p>
+  <p>5. 创建 <code>.clinerules</code>，写一行：<code>这是 AI 学习项目，用中文回答</code></p>
+  <p>6. 在 Cline 里说："你好，我在学习 AI Agent 开发"</p>
+  <div class="highlight"><strong><svg class="ic"><use href="icons.svg#i-check"/></svg> 检验标准：</strong>Cline 回复你一句话，说明配置成功。如果报错，把错误信息发给我。</div>
+</div>
+
+<div class="card"><h2><svg class="ic"><use href="icons.svg#i-clipboard"/></svg> 这一课你带走的 3 个概念</h2>
+<p><span class="num">1</span> <strong>Cline</strong> = VS Code 里的 AI 程序员，能直接改你的代码</p>
+<p><span class="num">2</span> <strong>Cline + CLI 配合</strong> = 日常用 Cline，复杂用 CLI</p>
+<p><span class="num">3</span> <strong>.clinerules</strong> = 给 Cline 看的"员工守则"，自动生效</p></div>
+
+<a href="lesson-7-prompt-pro.html" class="next-link"><svg class="ic"><use href="icons.svg#i-arrow"/></svg> 下一课：结构化 Prompt · 让你的指令更精准</a>
+</div>
+<footer class="footer"><div class="inner">
+  <span>© VibeHub · AI Agent 实战指南</span>
+  <div style="display:flex;gap:16px"><a href="../index.html">术语图鉴</a><a href="index.html">课程</a><a href="../software/index.html">软件库</a></div>
+</div></footer>
+<script src="lesson.js"></script>
+</body>
+</html>

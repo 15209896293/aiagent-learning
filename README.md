@@ -17,11 +17,11 @@
 ## 模块地图
 
 ```
-01-ecosystem/    生态全景 → 先有地图再走路
-02-tools/        Tool 体系 → Agent 怎么"动手"
-03-workflow/     工作流实战 → 你动手干
-04-pitfalls/     避坑与安全 → 不出事
-05-comparison/   对比评测 → 选对工具
+course-notes/01-ecosystem/    生态全景 → 先有地图再走路
+course-notes/02-tools/        Tool 体系 → Agent 怎么"动手"
+course-notes/03-workflow/     工作流实战 → 你动手干
+course-notes/04-pitfalls/     避坑与安全 → 不出事
+course-notes/05-comparison/   对比评测 → 选对工具
 demos/           可运行代码
 ```
 

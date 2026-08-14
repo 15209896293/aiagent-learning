@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第 2 课 · 模型 vs API vs API Key</title>
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="lesson.css">
+<style>
+  /* 本页专属演示组件（骨架已由 ../style.css + lesson.css 提供） */
+
+  /* 厨房比喻 */
+  .kitchen-demo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+  .kitchen-card {
+    text-align: center;
+    padding: 1.25rem;
+    border-radius: 12px;
+    background: var(--bg-demo);
+    border: 1px solid var(--border);
+  }
+  .kitchen-card .icon { font-size: 3rem; margin-bottom: 0.5rem; }
+  .kitchen-card h4 { margin-bottom: 0.35rem; font-size: 1rem; }
+  .kitchen-card p { font-size: 0.8rem; color: var(--text-3); line-height: 1.6; }
+  .kitchen-card .cost { display: inline-block; margin-top: 0.5rem; padding: 0.2rem 0.75rem; border-radius: 99px; font-size: 0.75rem; }
+  .cost.cheap { background: #22c55e20; color: #4ade80; }
+  .cost.expensive { background: #ef444420; color: #f87171; }
+
+  .pipeline {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1.5rem;
+    background: var(--bg-demo);
+    border-radius: 12px;
+    margin: 1rem 0;
+    flex-wrap: wrap;
+  }
+  .pipeline .node {
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    text-align: center;
+    font-size: 0.85rem;
+    border: 2px solid;
+  }
+  .pipeline .node.you { border-color: #22c55e; background: #22c55e10; }
+  .pipeline .node.net { border-color: #fbbf24; background: #fbbf2410; }
+  .pipeline .node.server { border-color: #a78bfa; background: #a78bfa10; }
+  .pipeline .node.model { border-color: #f472b6; background: #f472b610; }
+
+  .danger-box {
+    background: #ef444410;
+    border: 2px solid #ef4444;
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin: 1rem 0;
+  }
+  .danger-box h4 { color: #f87171; margin-bottom: 0.5rem; }
+
+  /* 你的Key长什么样 */
+  .key-demo {
+    background: var(--bg-demo);
+    padding: 1rem;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 0.9rem;
+    word-break: break-all;
+    margin: 0.75rem 0;
+  }
+  .key-demo .prefix { color: #f87171; }
+  .key-demo .secret { color: var(--text-3); }
+</style>
+</head>
+<body class="lesson-page">
+<nav class="nav">
+  <a class="logo" href="../index.html">
+    <span class="mark">V</span><span>Vibe<b>Hub</b></span><span class="sub">课程</span>
+  </a>
+  <div class="menu">
+    <a href="../index.html">术语图鉴</a>
+    <a href="index.html">课程</a>
+    <a href="../software/index.html">软件库</a>
+  </div>
+  <div class="spacer"></div>
+  <button class="icon-btn" id="themeBtn" title="切换主题"><svg class="ic i-moon"><use href="icons.svg#i-moon"/></svg><svg class="ic i-sun" hidden><use href="icons.svg#i-sun"/></svg></button>
+</nav>
+<div class="container">
+
+  <div class="breadcrumb"><svg class="ic"><use href="icons.svg#i-home"/></svg> <a href="index.html">课程首页</a> → 第 2 课</div>
+
+  <h1><svg class="ic"><use href="icons.svg#i-pizza"/></svg> 第 2 课 · 模型 vs API vs API Key</h1>
+  <p class="subtitle">三个词搞混了无数次？用"吃饭"一句话讲清楚</p>
+
+  <!-- 厨房比喻 -->
+  <div class="card">
+    <h2><svg class="ic"><use href="icons.svg#i-cook"/></svg> 核心比喻：自己做饭 vs 点外卖</h2>
+
+    <div class="kitchen-demo">
+      <div class="kitchen-card">
+        <div class="icon"><svg class="ic"><use href="icons.svg#i-cook"/></svg></div>
+        <h4>方案A：自己部署模型</h4>
+        <p>下载 DeepSeek 全部文件到你的电脑<br>（约 700GB）<br>需要一张几万块的显卡<br>每次用，自己电脑跑</p>
+        <span class="cost expensive"><svg class="ic"><use href="icons.svg#i-money"/></svg> 前期投入大，后面免费</span>
+      </div>
+      <div class="kitchen-card">
+        <div class="icon"><svg class="ic"><use href="icons.svg#i-motorcycle"/></svg></div>
+        <h4>方案B：调 API（你在用的）</h4>
+        <p>发文字给 DeepSeek 服务器<br>他们的显卡帮你跑<br>按字数收钱</p>
+        <span class="cost cheap"><svg class="ic"><use href="icons.svg#i-check"/></svg> 不用显卡，按量付费</span>
+      </div>
+    </div>
+
+    <p style="text-align:center;color:#94a3b8;font-size:0.9rem;margin-top:1rem;">
+      <svg class="ic"><use href="icons.svg#i-cook"/></svg> 模型 = 菜谱和食材（公式+参数）<br>
+      <svg class="ic"><use href="icons.svg#i-shop"/></svg> DeepSeek 服务器 = 餐厅后厨<br>
+      <svg class="ic"><use href="icons.svg#i-motorcycle"/></svg> API = 外卖小哥（帮你传话的通道）<br>
+      <svg class="ic"><use href="icons.svg#i-key"/></svg> API Key = 你的会员卡号（证明你付钱了）
+    </p>
+  </div>
+
+  <!-- 你现在的链路 -->
+  <div class="card">
+    <h2><svg class="ic"><use href="icons.svg#i-link"/></svg> 你现在"用 DeepSeek"的真实路径</h2>
+    <div class="pipeline">
+      <div class="node you"><svg class="ic"><use href="icons.svg#i-code"/></svg> 你打字<br><small>Cline / Claude Code</small></div>
+      <span style="font-size:1.5rem">→</span>
+      <div class="node net"><svg class="ic"><use href="icons.svg#i-key"/></svg> 带上 API Key<br><small>sk-52c14...</small></div>
+      <span style="font-size:1.5rem">→</span>
+      <div class="node server"><svg class="ic"><use href="icons.svg#i-shop"/></svg> DeepSeek 服务器<br><small>在云端，不在你电脑</small></div>
+      <span style="font-size:1.5rem">→</span>
+      <div class="node model"><svg class="ic"><use href="icons.svg#i-brain"/></svg> 模型运算<br><small>几百张显卡同时跑</small></div>
+    </div>
+    <p style="text-align:center;color:#64748b;font-size:0.85rem;margin-top:0.75rem;">整个来回通常不到 3 秒</p>
+
+    <div class="highlight">
+      <strong><svg class="ic"><use href="icons.svg#i-bulb"/></svg> 所以你说的"我用 DeepSeek"其实是在说：</strong><br>
+      "我在自己的电脑上，通过网络，调用 DeepSeek 公司服务器上的模型。按字数付钱。"
+    </div>
+  </div>
+
+  <!-- API Key -->
+  <div class="card">
+    <h2><svg class="ic"><use href="icons.svg#i-key"/></svg> API Key 就是你消费时刷的卡</h2>
+    <p>你现在的 DeepSeek API Key 长这样：</p>
+    <div class="key-demo">
+      <span class="prefix">sk-52c140926a4a422f8697a1420be9f3cb</span>
+    </div>
+    <p><strong>sk 前缀</strong> = "Secret Key"，秘密钥匙的意思。</p>
+    <p>DeepSeek 看到这个 key → 查到"哦，是 lenovo 在用"→ 调用一次扣几厘钱。</p>
+
+    <div class="danger-box">
+      <h4><svg class="ic"><use href="icons.svg#i-warn"/></svg> 这个 Key 像银行卡密码，不能给别人！</h4>
+      <p style="font-size:0.9rem">如果别人拿到你的 Key，他就可以用你的账户疯狂调用，花的全是你的钱。你不小心发到 GitHub 上，几分钟就会被机器人扫走，然后账单爆炸。</p>
+    </div>
+  </div>
+
+  <!-- 为什么开源还要付钱 -->
+  <div class="card">
+    <h2><svg class="ic"><use href="icons.svg#i-chat"/></svg> "开源模型"为什么还要付钱？</h2>
+    <p>DeepSeek 把<strong>模型文件</strong>公开了（谁都可以下载），这叫开源。</p>
+    <p>但<strong>运行模型需要显卡</strong>。DeepSeek 的服务器跑着几百张显卡，你每次调用他们就消耗电力和算力——这些要钱。</p>
+    <div class="highlight">
+      <strong>简单说：</strong>菜谱免费（开源），但让别人帮你做菜要付人工费（API调用费）。
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><svg class="ic"><use href="icons.svg#i-clipboard"/></svg> 这一课你带走的 3 个概念</h2>
+    <p><span class="num">1</span> <strong>模型</strong> = 一堆数学参数构成的文件，可以下载到本地，也可以放在云端</p>
+    <p><span class="num">2</span> <strong>API</strong> = 你通过网络调用别人服务器上的模型，"点外卖"模式</p>
+    <p><span class="num">3</span> <strong>API Key</strong> = 你的身份凭证，DeepSeek 用它来计费，不能泄露</p>
+  </div>
+
+  <a href="lesson-3-token.html" class="next-link"><svg class="ic"><use href="icons.svg#i-arrow"/></svg> 下一课：Token 是什么 · 你的每一分钱花在哪</a>
+
+</div>
+<footer class="footer"><div class="inner">
+  <span>© VibeHub · AI Agent 实战指南</span>
+  <div style="display:flex;gap:16px"><a href="../index.html">术语图鉴</a><a href="index.html">课程</a><a href="../software/index.html">软件库</a></div>
+</div></footer>
+<script src="lesson.js"></script>
+</body>
+</html>
